@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# Pytest
+.pytest_cache/
+
+# Packaging
+*.egg-info/
+
+# Env
+.env
+.venv/
+
+# Mac
+.DS_Store
