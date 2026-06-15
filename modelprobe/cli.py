@@ -64,7 +64,8 @@ def migrate():
         sys.exit(1)
 
     migrations_dir = Path(__file__).parent / "server" / "db" / "migrations"
-    cfg = Config()
+    ini_path = migrations_dir / "alembic.ini"
+    cfg = Config(str(ini_path))
     cfg.set_main_option("script_location", str(migrations_dir))
     command.upgrade(cfg, "head")
     click.echo("Migrations applied.")
