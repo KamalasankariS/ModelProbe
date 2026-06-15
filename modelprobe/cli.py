@@ -113,6 +113,8 @@ def run_suite_cmd(suite: str, version: str, test_file: str, run_group: str, comm
     from modelprobe.suite import run_suite
 
     click.echo(f"Running suite '{suite}' version '{version}' with {len(test_cases)} test case(s)...")
+    click.echo("Note: Using echo runner (input echoed as output). "
+               "For real evaluation, use run_suite() in Python with a custom runner.")
 
     result = run_suite(
         suite_name=suite,
