@@ -126,6 +126,21 @@ def run_suite(
             }
             errored += 1
             results.append(result)
+            router.write_run({
+                "id": run_id,
+                "trace_id": run_id,
+                "parent_id": None,
+                "suite": suite_name,
+                "version": version,
+                "run_group": run_group,
+                "commit_hash": commit_hash,
+                "tags": _tags,
+                "input": tc.get("input"),
+                "output": output,
+                "status": "error",
+                "latency_ms": None,
+                "token_count": None,
+            })
             router.write_eval_result(result)
             continue
 
@@ -145,6 +160,21 @@ def run_suite(
             }
             errored += 1
             results.append(result)
+            router.write_run({
+                "id": run_id,
+                "trace_id": run_id,
+                "parent_id": None,
+                "suite": suite_name,
+                "version": version,
+                "run_group": run_group,
+                "commit_hash": commit_hash,
+                "tags": _tags,
+                "input": tc.get("input"),
+                "output": output,
+                "status": "error",
+                "latency_ms": None,
+                "token_count": None,
+            })
             router.write_eval_result(result)
             continue
 
@@ -164,8 +194,6 @@ def run_suite(
 
         results.append(result)
 
-        router.write_eval_result(result)
-
         router.write_run({
             "id": run_id,
             "trace_id": run_id,
@@ -181,6 +209,8 @@ def run_suite(
             "latency_ms": None,
             "token_count": None,
         })
+
+        router.write_eval_result(result)
 
     total = len(test_cases)
     scoreable = total - skipped
