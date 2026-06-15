@@ -1,0 +1,41 @@
+name: nightly — integration + e2e
+
+on:
+  schedule:
+    - cron: "0 6 * * *"  # 6 AM UTC daily
+  workflow_dispatch:      # manual trigger
+
+jobs:
+  security-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -e ".[server,dev]"
+
+      - name: Run security / penetration tests
+        run: pytest tests/security/ -v --tb=short
+
+  full-suite:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -e ".[server,dev]"
+
+      - name: Run all tests
+        run: pytest tests/ -v --tb=short
