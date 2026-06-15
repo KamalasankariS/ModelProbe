@@ -2,6 +2,7 @@
 [![nightly — integration + e2e](https://github.com/KamalasankariS/ModelProbe/actions/workflows/nightly.yml/badge.svg)](https://github.com/KamalasankariS/ModelProbe/actions/workflows/nightly.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB.svg?logo=python&logoColor=white)](https://python.org)
+[![codecov](https://codecov.io/gh/KamalasankariS/ModelProbe/graph/badge.svg)](https://codecov.io/gh/KamalasankariS/ModelProbe)
 
 # ModelProbe
 
@@ -12,29 +13,20 @@ AI system evaluation and regression testing. Works locally with zero config, sca
 ## How it works
 
 ```mermaid
-flowchart LR
-    A[Test Cases] --> B[Runner]
-    B -->|model output| C[Evaluators]
-    C --> D{Pass / Fail}
-    D -->|results| E[Storage]
-    E --> F[Dashboard & API]
-
-    subgraph Evaluators
-        C1[exact]
-        C2[contains]
-        C3[regex]
-        C4[json_schema]
-        C5[llm_judge]
-        C6[hallucination]
-    end
-
-    subgraph Hallucination Strategies
-        H1[Self-Consistency\nre-query model N times\nmeasure agreement]
-        H2[Factual Grounding\nverify claims against\nWikidata knowledge graph]
-    end
-
-    C --> C1 & C2 & C3 & C4 & C5 & C6
-    C6 --> H1 & H2
+flowchart TD
+    A[Test Cases] --> B[Runner — calls your model]
+    B --> C{Evaluators}
+    C --> C1[exact]
+    C --> C2[contains]
+    C --> C3[regex]
+    C --> C4[json_schema]
+    C --> C5[llm_judge]
+    C --> C6[hallucination]
+    C6 --> H1[Self-Consistency]
+    C6 --> H2[Wikidata Grounding]
+    C1 & C2 & C3 & C4 & C5 & H1 & H2 --> D[Pass / Fail + Score]
+    D --> E[(SQLite or API)]
+    E --> F[Dashboard]
 ```
 
 ---
