@@ -1,16 +1,29 @@
 # Python
 __pycache__/
 *.pyc
+*.pyo
 
 # Pytest
 .pytest_cache/
+.coverage
+htmlcov/
 
 # Packaging
 *.egg-info/
+dist/
+build/
 
 # Env
 .env
 .venv/
+venv/
 
 # Mac
 .DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Database
+*.db
