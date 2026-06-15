@@ -78,6 +78,11 @@ def client():
     with TestClient(app, raise_server_exceptions=True) as c:
         yield c
 
+    if db_module._engine is not None:
+        import asyncio
+        loop = asyncio.new_event_loop()
+        loop.run_until_complete(db_module._engine.dispose())
+        loop.close()
     db_module._engine = None
     db_module._session_factory = None
     os.unlink(db_path)
