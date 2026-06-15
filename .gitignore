@@ -27,3 +27,6 @@ venv/
 
 # Database
 *.db
+
+# Dashboard
+dashboard/node_modules/
