@@ -146,10 +146,81 @@ modelprobe migrate
 | `regex` | Regex match. `config: {"pattern": "..."}` |
 | `json_schema` | JSON Schema validation. `config: {"schema": {...}}` |
 | `llm_judge` | LLM-graded rubric. `config: {"model": "...", "rubric": "..."}` |
+| `hallucination` | Detects hallucinations via self-consistency and Wikidata verification. See below. |
 
 All evaluators return `{passed, score, reason, status}` where `status` is one of `pass`, `fail`, `error`, `skipped`.
 
 `llm_judge` timeouts and errors produce `status="skipped"` — never `status="fail"`.
+
+---
+
+## Hallucination evaluator
+
+Detects hallucinations without paid APIs using two strategies:
+
+### Self-consistency
+
+Re-queries the same model multiple times with the same prompt and measures response stability. A model that knows the answer will produce it reliably; one that is guessing will vary. Based on Wang et al., "Self-Consistency Improves Chain of Thought Reasoning" (2022).
+
+```python
+from modelprobe import assert_eval
+
+assert_eval(
+    output="Paris",
+    eval_type="hallucination",
+    config={
+        "strategy": "consistency",
+        "prompt": "What is the capital of France? Reply in one word.",
+        "model": "llama3",
+        "endpoint": "http://localhost:11434/api/generate",
+        "samples": 5,
+        "threshold": 0.5,
+    },
+)
+```
+
+### Factual grounding (Wikidata)
+
+Verifies factual claims in the output against the Wikidata knowledge graph via its REST API. Catches fabricated facts, wrong dates, and incorrect attributions.
+
+```python
+result = assert_eval(
+    output="The capital of France is Paris.",
+    eval_type="hallucination",
+    config={
+        "strategy": "factual",
+        "claims": [
+            {"subject": "Q142", "property": "P36", "expected_label": "Paris"}
+        ],
+        "threshold": 0.5,
+    },
+)
+```
+
+---
+
+## Benchmark results
+
+Benchmarked 3 local models across 60 test cases (math, factual QA, instruction following, code generation, hallucination detection):
+
+| Model | Overall | Math | Factual | Instruction | Code | Hallucination |
+|---|---|---|---|---|---|---|
+| gemma3:4b | **88%** | 100% | 92% | 50% | 100% | **100%** |
+| codegemma:7b | 82% | 92% | 83% | 50% | 100% | 83% |
+| llama3 (8B) | 78% | 67% | 83% | 50% | 100% | 92% |
+
+Key findings:
+- Hallucination evaluator detected up to 17% confabulation rates across model families
+- Self-consistency correctly flagged uncertain knowledge (population statistics, obscure trivia) while confirming stable recall on well-known facts
+- All Wikidata factual claims verified successfully against the knowledge graph
+- gemma3:4b (4B params) outperformed llama3 (8B) overall — smaller does not mean worse
+
+Reproduce locally:
+
+```bash
+ollama pull gemma3:4b && ollama pull llama3 && ollama pull codegemma:7b
+python benchmarks/run_benchmark.py
+```
 
 ---
 
