@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -178,6 +179,8 @@ class SQLiteBackend:
                 q = q.filter(RunRecord.timestamp <= filters["date_to"])
             if filters.get("tag"):
                 key, _, value = filters["tag"].partition(":")
+                if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", key):
+                    return []
                 q = q.filter(text(f"json_extract(tags, '$.{key}') = :val").bindparams(val=value))
             rows = q.order_by(RunRecord.timestamp.desc()).all()
             return [_run_to_dict(r) for r in rows]

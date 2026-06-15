@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from typing import List, Optional
 from uuid import uuid4
@@ -111,7 +112,9 @@ async def list_runs(
         q = q.where(ServerRunRecord.timestamp <= date_to)
     if tag:
         key, _, value = tag.partition(":")
-        q = q.where(text(f"json_extract(tags, '$.{key}') = '{value}'"))
+        if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", key):
+            return _envelope([])
+        q = q.where(text(f"json_extract(tags, '$.{key}') = :tag_val").bindparams(tag_val=value))
 
     q = q.order_by(ServerRunRecord.timestamp.desc()).offset(offset).limit(limit)
     result = await session.execute(q)
