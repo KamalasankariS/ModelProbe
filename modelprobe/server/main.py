@@ -5,12 +5,13 @@ from __future__ import annotations
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 import modelprobe
-from modelprobe.server.routes import health, runs, suites
+from modelprobe.server.routes import evaluate, health, runs, suites
 
 
 def create_app() -> FastAPI:
@@ -54,9 +55,18 @@ def create_app() -> FastAPI:
     app.include_router(health.router, prefix="/api")
     app.include_router(runs.router, prefix="/api")
     app.include_router(suites.router, prefix="/api")
+    app.include_router(evaluate.router, prefix="/api")
 
     static_dir = Path(__file__).parent / "static" / "dist"
     if static_dir.exists() and any(static_dir.iterdir()):
-        app.mount("/", StaticFiles(directory=str(static_dir), html=True), name="static")
+        app.mount("/assets", StaticFiles(directory=str(static_dir / "assets")), name="assets")
+        index_html = static_dir / "index.html"
+
+        @app.get("/{path:path}")
+        async def spa_fallback(request: Request, path: str):
+            file_path = static_dir / path
+            if file_path.is_file():
+                return FileResponse(file_path)
+            return FileResponse(index_html)
 
     return app
