@@ -1,10 +1,7 @@
-"""Shared test fixtures for ModelProbe."""
-
 import pytest
 
 
 class NoOpBackend:
-    """Backend that silently discards all writes. Use in unit tests."""
 
     def write_run(self, run):
         pass
@@ -32,7 +29,6 @@ class NoOpBackend:
 
 
 class CapturingBackend:
-    """Backend that captures all written records in memory."""
 
     def __init__(self):
         self.runs = []

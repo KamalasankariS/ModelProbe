@@ -1,9 +1,4 @@
-"""Regression tests — evaluator return shape contracts.
-
-These tests lock down the evaluator API so that changes to evaluator
-internals cannot silently break the return value contract that downstream
-code depends on.
-"""
+"""Evaluator return shape contracts."""
 
 import pytest
 from modelprobe.evaluators import get_evaluator
@@ -27,7 +22,6 @@ VALID_STATUSES = {"pass", "fail", "error", "skipped"}
     ("json_schema", "{}", None, {}),
 ])
 def test_evaluator_returns_required_keys(eval_type, output, expected, config):
-    """Every evaluator must return all required keys regardless of outcome."""
     ev = get_evaluator(eval_type)
     result = ev.evaluate(output=output, expected=expected, config=config)
     assert REQUIRED_KEYS.issubset(result.keys()), f"Missing keys: {REQUIRED_KEYS - result.keys()}"
@@ -40,7 +34,6 @@ def test_evaluator_returns_required_keys(eval_type, output, expected, config):
     ("json_schema", '{"a": 1}', None, {"schema": {"type": "object"}}),
 ])
 def test_passing_evaluator_has_correct_status_and_score(eval_type, output, expected, config):
-    """A passing evaluation must have status='pass', passed=True, score > 0."""
     ev = get_evaluator(eval_type)
     result = ev.evaluate(output=output, expected=expected, config=config)
     assert result["passed"] is True
@@ -55,7 +48,6 @@ def test_passing_evaluator_has_correct_status_and_score(eval_type, output, expec
     ("json_schema", '{"name": "Alice"}', None, {"schema": {"type": "object", "required": ["age"]}}),
 ])
 def test_failing_evaluator_has_correct_status_and_score(eval_type, output, expected, config):
-    """A failing evaluation must have passed=False and score <= threshold."""
     ev = get_evaluator(eval_type)
     result = ev.evaluate(output=output, expected=expected, config=config)
     assert result["passed"] is False
@@ -63,7 +55,6 @@ def test_failing_evaluator_has_correct_status_and_score(eval_type, output, expec
 
 
 def test_score_is_always_numeric():
-    """Score must always be a float, never None."""
     for eval_type in ["exact", "contains", "regex", "json_schema"]:
         ev = get_evaluator(eval_type)
         result = ev.evaluate(output="test", expected="test", config={
@@ -73,7 +64,6 @@ def test_score_is_always_numeric():
 
 
 def test_status_is_always_valid():
-    """Status must be one of the four allowed values."""
     for eval_type in ["exact", "contains", "regex", "json_schema"]:
         ev = get_evaluator(eval_type)
         result = ev.evaluate(output="test", expected="test", config={
@@ -83,7 +73,6 @@ def test_status_is_always_valid():
 
 
 def test_evaluator_name_matches_registry_key():
-    """Each evaluator's .name must match the key used to register it."""
     for name in ["exact", "contains", "regex", "json_schema", "llm_judge"]:
         ev = get_evaluator(name)
         assert ev.name == name

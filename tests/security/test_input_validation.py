@@ -1,8 +1,4 @@
-"""Security tests — input validation and boundary conditions.
-
-Verifies that oversized inputs, special characters, and malformed
-payloads are handled safely without crashing or leaking information.
-"""
+"""Input validation: malformed payloads, special characters, oversized inputs."""
 
 import os
 import tempfile
@@ -102,7 +98,6 @@ class TestSpecialCharacters:
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
         res = client.post("/api/runs", json=payload)
-        # Should either accept or reject cleanly, never crash
         assert res.status_code in (201, 422)
 
 

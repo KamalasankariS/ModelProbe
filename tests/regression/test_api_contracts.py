@@ -1,8 +1,4 @@
-"""Regression tests — API response envelope and endpoint contracts.
-
-Locks down the REST API shape so that frontend and SDK clients
-are not broken by backend changes.
-"""
+"""API response envelope and endpoint contracts."""
 
 import os
 import tempfile

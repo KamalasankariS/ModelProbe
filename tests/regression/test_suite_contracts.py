@@ -1,8 +1,4 @@
-"""Regression tests — SuiteResult shape and run_suite behavior contracts.
-
-Locks down the public API of run_suite so that refactoring cannot
-silently change the result shape or counting logic.
-"""
+"""SuiteResult shape and run_suite behavior contracts."""
 
 import pytest
 from modelprobe.suite import run_suite, SuiteResult
@@ -54,8 +50,6 @@ class TestSuiteResultShape:
 
 class TestSuiteCountingLogic:
     def test_pass_rate_excludes_skipped(self):
-        """pass_rate = passed / (total - skipped)"""
-        # All pass => 1.0
         result = run_suite("s", "v1", [_case()], runner=lambda tc: "ok")
         assert result.pass_rate == 1.0
 
@@ -69,7 +63,6 @@ class TestSuiteCountingLogic:
             "s", "v1", cases,
             runner=lambda tc: tc["expected_output"] if tc["test_case_id"] != "tc_2" else "wrong",
         )
-        # pass_rate should be a float with at most 4 decimal places
         assert result.pass_rate == round(result.pass_rate, 4)
 
     def test_empty_suite_returns_zero_pass_rate(self):

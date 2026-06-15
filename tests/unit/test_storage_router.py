@@ -37,7 +37,7 @@ class TestRouterDelegation:
             def write_run(self, run):
                 raise RuntimeError("db exploded")
         monkeypatch.setattr(router_module, "_backend", BrokenBackend())
-        router_module.write_run({"id": "r1"})  # should not raise
+        router_module.write_run({"id": "r1"})
 
 
 class TestResetBackend:

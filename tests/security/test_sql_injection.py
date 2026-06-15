@@ -1,8 +1,4 @@
-"""Security tests — SQL injection attack vectors.
-
-Verifies that tag filtering, user inputs, and query parameters
-cannot be used to inject arbitrary SQL into database queries.
-"""
+"""SQL injection attack vectors against tag filtering and query parameters."""
 
 import os
 import tempfile
@@ -16,9 +12,6 @@ pytest.importorskip("httpx")
 from fastapi.testclient import TestClient
 
 
-# ---------------------------------------------------------------
-# SQLite backend — tag filter injection
-# ---------------------------------------------------------------
 
 @pytest.fixture
 def backend():
@@ -47,34 +40,26 @@ SQL_INJECTION_PAYLOADS = [
 
 @pytest.mark.parametrize("payload", SQL_INJECTION_PAYLOADS)
 def test_sqlite_tag_filter_rejects_injection(backend, payload):
-    """Malicious tag keys must be rejected, not interpolated into SQL."""
     results = backend.list_runs({"tag": payload})
-    # Should return empty — not all rows, not an error
     assert results == []
 
 
 def test_sqlite_tag_filter_allows_valid_keys(backend):
-    """Valid tag keys must still work after the security fix."""
     results = backend.list_runs({"tag": "env:prod"})
     assert len(results) == 1
     assert results[0]["tags"]["env"] == "prod"
 
 
 def test_sqlite_tag_filter_rejects_dot_traversal(backend):
-    """JSON path traversal via dots must be blocked."""
     results = backend.list_runs({"tag": "env.nested.key:value"})
     assert results == []
 
 
 def test_sqlite_tag_value_with_special_chars(backend):
-    """Tag values with SQL metacharacters must be safely parameterized."""
     results = backend.list_runs({"tag": "env:prod' OR '1'='1"})
     assert results == []
 
 
-# ---------------------------------------------------------------
-# API endpoint — tag filter injection via query parameter
-# ---------------------------------------------------------------
 
 @pytest.fixture
 def client():
@@ -109,7 +94,6 @@ API_INJECTION_PAYLOADS = [
 
 @pytest.mark.parametrize("payload", API_INJECTION_PAYLOADS)
 def test_api_tag_filter_rejects_injection(client, payload):
-    """API tag query param must reject SQL injection attempts."""
     res = client.get(f"/api/runs?tag={payload}")
     assert res.status_code == 200
     data = res.json()["data"]
@@ -117,7 +101,6 @@ def test_api_tag_filter_rejects_injection(client, payload):
 
 
 def test_api_tag_filter_allows_valid_key(client):
-    """Valid tag queries must still work through the API."""
     from datetime import datetime, timezone
     from uuid import uuid4
 
