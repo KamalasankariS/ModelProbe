@@ -4,6 +4,7 @@ import SuiteList from "./pages/SuiteList";
 import SuiteDetail from "./pages/SuiteDetail";
 import CompareView from "./pages/CompareView";
 import RunDetail from "./pages/RunDetail";
+import Playground from "./pages/Playground";
 
 function NavItem({ to, label }: { to: string; label: string }) {
   return (
@@ -28,6 +29,7 @@ export default function App() {
         <nav className="flex gap-2">
           <NavItem to="/" label="Overview" />
           <NavItem to="/suites" label="Suites" />
+          <NavItem to="/playground" label="Playground" />
         </nav>
       </header>
       <main className="flex-1 p-6">
@@ -37,6 +39,7 @@ export default function App() {
           <Route path="/suites/:name" element={<SuiteDetail />} />
           <Route path="/compare/:name" element={<CompareView />} />
           <Route path="/runs/:id" element={<RunDetail />} />
+          <Route path="/playground" element={<Playground />} />
         </Routes>
       </main>
     </div>
