@@ -23,6 +23,7 @@ from modelprobe.evaluators.contains import ContainsEvaluator
 from modelprobe.evaluators.regex import RegexEvaluator
 from modelprobe.evaluators.json_schema import JsonSchemaEvaluator
 from modelprobe.evaluators.llm_judge import LLMJudgeEvaluator
+from modelprobe.evaluators.hallucination import HallucinationEvaluator
 
 _REGISTRY = {
     "exact": ExactEvaluator,
@@ -30,6 +31,7 @@ _REGISTRY = {
     "regex": RegexEvaluator,
     "json_schema": JsonSchemaEvaluator,
     "llm_judge": LLMJudgeEvaluator,
+    "hallucination": HallucinationEvaluator,
 }
 
 
@@ -62,5 +64,6 @@ __all__ = [
     "RegexEvaluator",
     "JsonSchemaEvaluator",
     "LLMJudgeEvaluator",
+    "HallucinationEvaluator",
     "get_evaluator",
 ]
