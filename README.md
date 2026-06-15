@@ -9,6 +9,36 @@ AI system evaluation and regression testing. Works locally with zero config, sca
 
 ---
 
+## How it works
+
+```mermaid
+flowchart LR
+    A[Test Cases] --> B[Runner]
+    B -->|model output| C[Evaluators]
+    C --> D{Pass / Fail}
+    D -->|results| E[Storage]
+    E --> F[Dashboard & API]
+
+    subgraph Evaluators
+        C1[exact]
+        C2[contains]
+        C3[regex]
+        C4[json_schema]
+        C5[llm_judge]
+        C6[hallucination]
+    end
+
+    subgraph Hallucination Strategies
+        H1[Self-Consistency\nre-query model N times\nmeasure agreement]
+        H2[Factual Grounding\nverify claims against\nWikidata knowledge graph]
+    end
+
+    C --> C1 & C2 & C3 & C4 & C5 & C6
+    C6 --> H1 & H2
+```
+
+---
+
 ## Install
 
 ```bash
