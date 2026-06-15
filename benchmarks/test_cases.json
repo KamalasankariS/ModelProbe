@@ -1,0 +1,576 @@
+[
+  {
+    "test_case_id": "math_01",
+    "category": "math",
+    "input": "What is 15% of 80? Reply with just the number.",
+    "expected_output": "12",
+    "eval_type": "contains",
+    "eval_config": {"values": ["12"]}
+  },
+  {
+    "test_case_id": "math_02",
+    "category": "math",
+    "input": "What is 144 divided by 12? Reply with just the number.",
+    "expected_output": "12",
+    "eval_type": "contains",
+    "eval_config": {"values": ["12"]}
+  },
+  {
+    "test_case_id": "math_03",
+    "category": "math",
+    "input": "What is the square root of 256? Reply with just the number.",
+    "expected_output": "16",
+    "eval_type": "contains",
+    "eval_config": {"values": ["16"]}
+  },
+  {
+    "test_case_id": "math_04",
+    "category": "math",
+    "input": "If a shirt costs $40 and is on sale for 25% off, what is the sale price? Reply with just the number.",
+    "expected_output": "30",
+    "eval_type": "contains",
+    "eval_config": {"values": ["30"]}
+  },
+  {
+    "test_case_id": "math_05",
+    "category": "math",
+    "input": "What is 7 factorial? Reply with just the number.",
+    "expected_output": "5040",
+    "eval_type": "contains",
+    "eval_config": {"values": ["5040"]}
+  },
+  {
+    "test_case_id": "math_06",
+    "category": "math",
+    "input": "A train travels 240 miles in 3 hours. What is its average speed in miles per hour? Reply with just the number.",
+    "expected_output": "80",
+    "eval_type": "contains",
+    "eval_config": {"values": ["80"]}
+  },
+  {
+    "test_case_id": "math_07",
+    "category": "math",
+    "input": "What is 2 to the power of 10? Reply with just the number.",
+    "expected_output": "1024",
+    "eval_type": "contains",
+    "eval_config": {"values": ["1024"]}
+  },
+  {
+    "test_case_id": "math_08",
+    "category": "math",
+    "input": "What is the sum of the first 10 positive integers? Reply with just the number.",
+    "expected_output": "55",
+    "eval_type": "contains",
+    "eval_config": {"values": ["55"]}
+  },
+  {
+    "test_case_id": "math_09",
+    "category": "math",
+    "input": "Convert 5 kilometers to meters. Reply with just the number.",
+    "expected_output": "5000",
+    "eval_type": "contains",
+    "eval_config": {"values": ["5000"]}
+  },
+  {
+    "test_case_id": "math_10",
+    "category": "math",
+    "input": "What is the area of a circle with radius 7? Use pi = 3.14 and round to two decimal places. Reply with just the number.",
+    "expected_output": "153.86",
+    "eval_type": "contains",
+    "eval_config": {"values": ["153.86"]}
+  },
+  {
+    "test_case_id": "math_11",
+    "category": "math",
+    "input": "Solve for x: 3x + 7 = 22. Reply with just the number.",
+    "expected_output": "5",
+    "eval_type": "contains",
+    "eval_config": {"values": ["5"]}
+  },
+  {
+    "test_case_id": "math_12",
+    "category": "math",
+    "input": "What is the greatest common divisor of 48 and 36? Reply with just the number.",
+    "expected_output": "12",
+    "eval_type": "contains",
+    "eval_config": {"values": ["12"]}
+  },
+  {
+    "test_case_id": "fact_01",
+    "category": "factual",
+    "input": "What is the capital of France? Reply in one word.",
+    "expected_output": "Paris",
+    "eval_type": "contains",
+    "eval_config": {"values": ["Paris"]}
+  },
+  {
+    "test_case_id": "fact_02",
+    "category": "factual",
+    "input": "What planet is closest to the Sun? Reply in one word.",
+    "expected_output": "Mercury",
+    "eval_type": "contains",
+    "eval_config": {"values": ["Mercury"]}
+  },
+  {
+    "test_case_id": "fact_03",
+    "category": "factual",
+    "input": "What is the chemical symbol for gold? Reply in one word.",
+    "expected_output": "Au",
+    "eval_type": "contains",
+    "eval_config": {"values": ["Au"]}
+  },
+  {
+    "test_case_id": "fact_04",
+    "category": "factual",
+    "input": "How many continents are there? Reply with just the number.",
+    "expected_output": "7",
+    "eval_type": "contains",
+    "eval_config": {"values": ["7"]}
+  },
+  {
+    "test_case_id": "fact_05",
+    "category": "factual",
+    "input": "What is the boiling point of water in Celsius? Reply with just the number.",
+    "expected_output": "100",
+    "eval_type": "contains",
+    "eval_config": {"values": ["100"]}
+  },
+  {
+    "test_case_id": "fact_06",
+    "category": "factual",
+    "input": "Who wrote Romeo and Juliet? Reply with just the name.",
+    "expected_output": "Shakespeare",
+    "eval_type": "contains",
+    "eval_config": {"values": ["Shakespeare"]}
+  },
+  {
+    "test_case_id": "fact_07",
+    "category": "factual",
+    "input": "What is the largest organ in the human body? Reply in one word.",
+    "expected_output": "Skin",
+    "eval_type": "contains",
+    "eval_config": {"values": ["skin", "Skin"]}
+  },
+  {
+    "test_case_id": "fact_08",
+    "category": "factual",
+    "input": "What gas do plants absorb from the atmosphere during photosynthesis? Reply with the chemical formula.",
+    "expected_output": "CO2",
+    "eval_type": "contains",
+    "eval_config": {"values": ["CO2"]}
+  },
+  {
+    "test_case_id": "fact_09",
+    "category": "factual",
+    "input": "What year did World War II end? Reply with just the year.",
+    "expected_output": "1945",
+    "eval_type": "contains",
+    "eval_config": {"values": ["1945"]}
+  },
+  {
+    "test_case_id": "fact_10",
+    "category": "factual",
+    "input": "What is the speed of light in kilometers per second, rounded to the nearest thousand? Reply with just the number.",
+    "expected_output": "300000",
+    "eval_type": "contains",
+    "eval_config": {"values": ["300000", "300,000"]}
+  },
+  {
+    "test_case_id": "fact_11",
+    "category": "factual",
+    "input": "What is the smallest prime number? Reply with just the number.",
+    "expected_output": "2",
+    "eval_type": "contains",
+    "eval_config": {"values": ["2"]}
+  },
+  {
+    "test_case_id": "fact_12",
+    "category": "factual",
+    "input": "What element has atomic number 1? Reply in one word.",
+    "expected_output": "Hydrogen",
+    "eval_type": "contains",
+    "eval_config": {"values": ["Hydrogen", "hydrogen"]}
+  },
+  {
+    "test_case_id": "inst_01",
+    "category": "instruction",
+    "input": "Return a JSON object with exactly two keys: \"name\" (a string) and \"age\" (a number). Use any values you want.",
+    "eval_type": "json_schema",
+    "eval_config": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "age": {"type": "number"}
+        },
+        "required": ["name", "age"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "test_case_id": "inst_02",
+    "category": "instruction",
+    "input": "Return a JSON array of exactly 3 strings. Each string should be a color.",
+    "eval_type": "json_schema",
+    "eval_config": {
+      "schema": {
+        "type": "array",
+        "items": {"type": "string"},
+        "minItems": 3,
+        "maxItems": 3
+      }
+    }
+  },
+  {
+    "test_case_id": "inst_03",
+    "category": "instruction",
+    "input": "Return a JSON object with keys \"city\" (string), \"population\" (integer), and \"country\" (string). Use real data for any city.",
+    "eval_type": "json_schema",
+    "eval_config": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "city": {"type": "string"},
+          "population": {"type": "integer"},
+          "country": {"type": "string"}
+        },
+        "required": ["city", "population", "country"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "test_case_id": "inst_04",
+    "category": "instruction",
+    "input": "List 5 programming languages. Return ONLY a JSON array of strings, nothing else.",
+    "eval_type": "json_schema",
+    "eval_config": {
+      "schema": {
+        "type": "array",
+        "items": {"type": "string"},
+        "minItems": 5,
+        "maxItems": 5
+      }
+    }
+  },
+  {
+    "test_case_id": "inst_05",
+    "category": "instruction",
+    "input": "Return a JSON object with a key \"items\" that contains an array of 2 objects, each with \"id\" (integer) and \"label\" (string).",
+    "eval_type": "json_schema",
+    "eval_config": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {"type": "integer"},
+                "label": {"type": "string"}
+              },
+              "required": ["id", "label"]
+            },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "required": ["items"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "test_case_id": "inst_06",
+    "category": "instruction",
+    "input": "Write exactly one sentence that contains the word 'Python' and the word 'versatile'.",
+    "eval_type": "regex",
+    "eval_config": {"pattern": "(?i)(?=.*python)(?=.*versatile).+"}
+  },
+  {
+    "test_case_id": "inst_07",
+    "category": "instruction",
+    "input": "Reply with a valid email address. It can be fictional.",
+    "eval_type": "regex",
+    "eval_config": {"pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"}
+  },
+  {
+    "test_case_id": "inst_08",
+    "category": "instruction",
+    "input": "Reply with a date in the format YYYY-MM-DD. Use any date you want.",
+    "eval_type": "regex",
+    "eval_config": {"pattern": "\\d{4}-\\d{2}-\\d{2}"}
+  },
+  {
+    "test_case_id": "inst_09",
+    "category": "instruction",
+    "input": "Reply with exactly the word 'ACKNOWLEDGED' in all caps, nothing else.",
+    "expected_output": "ACKNOWLEDGED",
+    "eval_type": "exact"
+  },
+  {
+    "test_case_id": "inst_10",
+    "category": "instruction",
+    "input": "Reply with a comma-separated list of exactly 4 numbers between 1 and 100.",
+    "eval_type": "regex",
+    "eval_config": {"pattern": "\\d{1,3},\\s*\\d{1,3},\\s*\\d{1,3},\\s*\\d{1,3}"}
+  },
+  {
+    "test_case_id": "inst_11",
+    "category": "instruction",
+    "input": "Return a JSON object with key \"status\" set to the string \"ok\" and key \"code\" set to the integer 200.",
+    "eval_type": "json_schema",
+    "eval_config": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "status": {"type": "string", "const": "ok"},
+          "code": {"type": "integer", "const": 200}
+        },
+        "required": ["status", "code"],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "test_case_id": "inst_12",
+    "category": "instruction",
+    "input": "Reply with a hex color code. Example format: #FF5733",
+    "eval_type": "regex",
+    "eval_config": {"pattern": "#[0-9A-Fa-f]{6}"}
+  },
+  {
+    "test_case_id": "code_01",
+    "category": "code",
+    "input": "Write a Python function called 'reverse_string' that takes a string and returns it reversed. Only output the function, no explanation.",
+    "eval_type": "contains",
+    "eval_config": {"values": ["def reverse_string"]}
+  },
+  {
+    "test_case_id": "code_02",
+    "category": "code",
+    "input": "Write a Python function called 'is_palindrome' that returns True if a string reads the same forwards and backwards, False otherwise. Only output the function, no explanation.",
+    "eval_type": "contains",
+    "eval_config": {"values": ["def is_palindrome"]}
+  },
+  {
+    "test_case_id": "code_03",
+    "category": "code",
+    "input": "Write a Python function called 'fibonacci' that takes an integer n and returns the nth Fibonacci number. Only output the function, no explanation.",
+    "eval_type": "contains",
+    "eval_config": {"values": ["def fibonacci"]}
+  },
+  {
+    "test_case_id": "code_04",
+    "category": "code",
+    "input": "Write a Python function called 'flatten' that takes a nested list and returns a flat list. Only output the function, no explanation.",
+    "eval_type": "contains",
+    "eval_config": {"values": ["def flatten"]}
+  },
+  {
+    "test_case_id": "code_05",
+    "category": "code",
+    "input": "Write a Python function called 'count_vowels' that takes a string and returns the number of vowels. Only output the function, no explanation.",
+    "eval_type": "contains",
+    "eval_config": {"values": ["def count_vowels"]}
+  },
+  {
+    "test_case_id": "code_06",
+    "category": "code",
+    "input": "Write a Python function called 'merge_dicts' that takes two dictionaries and returns a merged dictionary. Only output the function, no explanation.",
+    "eval_type": "contains",
+    "eval_config": {"values": ["def merge_dicts"]}
+  },
+  {
+    "test_case_id": "code_07",
+    "category": "code",
+    "input": "Write a Python function called 'binary_search' that takes a sorted list and a target value, and returns the index of the target or -1 if not found. Only output the function, no explanation.",
+    "eval_type": "contains",
+    "eval_config": {"values": ["def binary_search"]}
+  },
+  {
+    "test_case_id": "code_08",
+    "category": "code",
+    "input": "Write a Python function called 'remove_duplicates' that takes a list and returns a new list with duplicates removed, preserving order. Only output the function, no explanation.",
+    "eval_type": "contains",
+    "eval_config": {"values": ["def remove_duplicates"]}
+  },
+  {
+    "test_case_id": "code_09",
+    "category": "code",
+    "input": "Write a Python class called 'Stack' with methods 'push', 'pop', and 'is_empty'. Only output the class, no explanation.",
+    "eval_type": "contains",
+    "eval_config": {"values": ["class Stack"]}
+  },
+  {
+    "test_case_id": "code_10",
+    "category": "code",
+    "input": "Write a Python function called 'caesar_cipher' that takes a string and an integer shift, and returns the encrypted string. Only lowercase letters should be shifted. Only output the function, no explanation.",
+    "eval_type": "contains",
+    "eval_config": {"values": ["def caesar_cipher"]}
+  },
+  {
+    "test_case_id": "code_11",
+    "category": "code",
+    "input": "Write a Python function called 'matrix_multiply' that takes two 2D lists (matrices) and returns their product. Only output the function, no explanation.",
+    "eval_type": "contains",
+    "eval_config": {"values": ["def matrix_multiply"]}
+  },
+  {
+    "test_case_id": "code_12",
+    "category": "code",
+    "input": "Write a Python function called 'validate_email' that takes a string and returns True if it looks like a valid email address, False otherwise. Use regex. Only output the function, no explanation.",
+    "eval_type": "contains",
+    "eval_config": {"values": ["def validate_email", "import re"]}
+  },
+  {
+    "test_case_id": "hall_01",
+    "category": "hallucination",
+    "input": "What is the capital of France? Reply in one word.",
+    "eval_type": "hallucination",
+    "eval_config": {
+      "strategy": "consistency",
+      "prompt": "What is the capital of France? Reply in one word.",
+      "samples": 5,
+      "threshold": 0.5
+    }
+  },
+  {
+    "test_case_id": "hall_02",
+    "category": "hallucination",
+    "input": "What year was the Eiffel Tower completed? Reply with just the year.",
+    "eval_type": "hallucination",
+    "eval_config": {
+      "strategy": "consistency",
+      "prompt": "What year was the Eiffel Tower completed? Reply with just the year.",
+      "samples": 5,
+      "threshold": 0.5
+    }
+  },
+  {
+    "test_case_id": "hall_03",
+    "category": "hallucination",
+    "input": "Who was the first person to walk on the Moon? Reply with just the name.",
+    "eval_type": "hallucination",
+    "eval_config": {
+      "strategy": "consistency",
+      "prompt": "Who was the first person to walk on the Moon? Reply with just the name.",
+      "samples": 5,
+      "threshold": 0.5
+    }
+  },
+  {
+    "test_case_id": "hall_04",
+    "category": "hallucination",
+    "input": "What is the molecular formula for water? Reply with just the formula.",
+    "eval_type": "hallucination",
+    "eval_config": {
+      "strategy": "consistency",
+      "prompt": "What is the molecular formula for water? Reply with just the formula.",
+      "samples": 5,
+      "threshold": 0.5
+    }
+  },
+  {
+    "test_case_id": "hall_05",
+    "category": "hallucination",
+    "input": "Name the 7th planet from the Sun. Reply in one word.",
+    "eval_type": "hallucination",
+    "eval_config": {
+      "strategy": "consistency",
+      "prompt": "Name the 7th planet from the Sun. Reply in one word.",
+      "samples": 5,
+      "threshold": 0.5
+    }
+  },
+  {
+    "test_case_id": "hall_06",
+    "category": "hallucination",
+    "input": "What is the airspeed velocity of an unladen European swallow in km/h? Reply with just a number.",
+    "eval_type": "hallucination",
+    "eval_config": {
+      "strategy": "consistency",
+      "prompt": "What is the airspeed velocity of an unladen European swallow in km/h? Reply with just a number.",
+      "samples": 5,
+      "threshold": 0.5
+    }
+  },
+  {
+    "test_case_id": "hall_07",
+    "category": "hallucination",
+    "input": "How many moons does Mars have? Reply with just the number.",
+    "eval_type": "hallucination",
+    "eval_config": {
+      "strategy": "consistency",
+      "prompt": "How many moons does Mars have? Reply with just the number.",
+      "samples": 5,
+      "threshold": 0.5
+    }
+  },
+  {
+    "test_case_id": "hall_08",
+    "category": "hallucination",
+    "input": "What is the population of Tokyo as of 2023? Reply with just a number.",
+    "eval_type": "hallucination",
+    "eval_config": {
+      "strategy": "consistency",
+      "prompt": "What is the population of Tokyo as of 2023? Reply with just a number.",
+      "samples": 5,
+      "threshold": 0.5
+    }
+  },
+  {
+    "test_case_id": "hall_09",
+    "category": "hallucination",
+    "input": "What is the capital of France?",
+    "eval_type": "hallucination",
+    "eval_config": {
+      "strategy": "factual",
+      "claims": [
+        {"subject": "Q142", "property": "P36", "expected_label": "Paris"}
+      ],
+      "threshold": 0.5
+    }
+  },
+  {
+    "test_case_id": "hall_10",
+    "category": "hallucination",
+    "input": "What element has the chemical symbol Au?",
+    "eval_type": "hallucination",
+    "eval_config": {
+      "strategy": "factual",
+      "claims": [
+        {"subject": "Q897", "property": "P246", "expected_label": "Au"}
+      ],
+      "threshold": 0.5
+    }
+  },
+  {
+    "test_case_id": "hall_11",
+    "category": "hallucination",
+    "input": "On which continent is Brazil located?",
+    "eval_type": "hallucination",
+    "eval_config": {
+      "strategy": "factual",
+      "claims": [
+        {"subject": "Q155", "property": "P30", "expected_label": "South America"}
+      ],
+      "threshold": 0.5
+    }
+  },
+  {
+    "test_case_id": "hall_12",
+    "category": "hallucination",
+    "input": "Who wrote the play Hamlet?",
+    "eval_type": "hallucination",
+    "eval_config": {
+      "strategy": "factual",
+      "claims": [
+        {"subject": "Q41567", "property": "P50", "expected_label": "Shakespeare"}
+      ],
+      "threshold": 0.5
+    }
+  }
+]

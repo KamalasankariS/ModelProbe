@@ -1,0 +1,26 @@
+[
+  {
+    "model": "gemma3:4b",
+    "total": 60,
+    "passed": 53,
+    "failed": 1,
+    "pass_rate": 0.8833,
+    "avg_latency_s": 1.27
+  },
+  {
+    "model": "llama3",
+    "total": 60,
+    "passed": 47,
+    "failed": 8,
+    "pass_rate": 0.7833,
+    "avg_latency_s": 1.23
+  },
+  {
+    "model": "codegemma:7b",
+    "total": 60,
+    "passed": 49,
+    "failed": 5,
+    "pass_rate": 0.8167,
+    "avg_latency_s": 1.47
+  }
+]

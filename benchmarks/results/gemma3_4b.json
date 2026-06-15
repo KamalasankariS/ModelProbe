@@ -1,0 +1,372 @@
+{
+  "model": "gemma3:4b",
+  "total": 60,
+  "passed": 53,
+  "failed": 1,
+  "errored": 6,
+  "skipped": 0,
+  "pass_rate": 0.8833,
+  "avg_latency_s": 1.27,
+  "per_case": [
+    {
+      "test_case_id": "math_01",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['12']"
+    },
+    {
+      "test_case_id": "math_02",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['12']"
+    },
+    {
+      "test_case_id": "math_03",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['16']"
+    },
+    {
+      "test_case_id": "math_04",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['30']"
+    },
+    {
+      "test_case_id": "math_05",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['5040']"
+    },
+    {
+      "test_case_id": "math_06",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['80']"
+    },
+    {
+      "test_case_id": "math_07",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['1024']"
+    },
+    {
+      "test_case_id": "math_08",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['55']"
+    },
+    {
+      "test_case_id": "math_09",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['5000']"
+    },
+    {
+      "test_case_id": "math_10",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['153.86']"
+    },
+    {
+      "test_case_id": "math_11",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['5']"
+    },
+    {
+      "test_case_id": "math_12",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['12']"
+    },
+    {
+      "test_case_id": "fact_01",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['Paris']"
+    },
+    {
+      "test_case_id": "fact_02",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['Mercury']"
+    },
+    {
+      "test_case_id": "fact_03",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['Au']"
+    },
+    {
+      "test_case_id": "fact_04",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['7']"
+    },
+    {
+      "test_case_id": "fact_05",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['100']"
+    },
+    {
+      "test_case_id": "fact_06",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['Shakespeare']"
+    },
+    {
+      "test_case_id": "fact_07",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['Skin']"
+    },
+    {
+      "test_case_id": "fact_08",
+      "status": "fail",
+      "score": 0.0,
+      "reason": "None of ['CO2'] found in output"
+    },
+    {
+      "test_case_id": "fact_09",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['1945']"
+    },
+    {
+      "test_case_id": "fact_10",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['300000']"
+    },
+    {
+      "test_case_id": "fact_11",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['2']"
+    },
+    {
+      "test_case_id": "fact_12",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['Hydrogen']"
+    },
+    {
+      "test_case_id": "inst_01",
+      "status": "error",
+      "score": 0.0,
+      "reason": "Output is not valid JSON: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "test_case_id": "inst_02",
+      "status": "error",
+      "score": 0.0,
+      "reason": "Output is not valid JSON: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "test_case_id": "inst_03",
+      "status": "error",
+      "score": 0.0,
+      "reason": "Output is not valid JSON: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "test_case_id": "inst_04",
+      "status": "error",
+      "score": 0.0,
+      "reason": "Output is not valid JSON: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "test_case_id": "inst_05",
+      "status": "error",
+      "score": 0.0,
+      "reason": "Output is not valid JSON: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "test_case_id": "inst_06",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Pattern matched: 'Because of its clear syntax and extensive libraries, Python is a remarkably versatile language for both beginners and experienced programmers.'"
+    },
+    {
+      "test_case_id": "inst_07",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Pattern matched: 'info@examplefuturesolutions.com'"
+    },
+    {
+      "test_case_id": "inst_08",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Pattern matched: '2024-03-15'"
+    },
+    {
+      "test_case_id": "inst_09",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Exact match"
+    },
+    {
+      "test_case_id": "inst_10",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Pattern matched: '23, 56, 89, 12'"
+    },
+    {
+      "test_case_id": "inst_11",
+      "status": "error",
+      "score": 0.0,
+      "reason": "Output is not valid JSON: Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+      "test_case_id": "inst_12",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Pattern matched: '#87CEEB'"
+    },
+    {
+      "test_case_id": "code_01",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['def reverse_string']"
+    },
+    {
+      "test_case_id": "code_02",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['def is_palindrome']"
+    },
+    {
+      "test_case_id": "code_03",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['def fibonacci']"
+    },
+    {
+      "test_case_id": "code_04",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['def flatten']"
+    },
+    {
+      "test_case_id": "code_05",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['def count_vowels']"
+    },
+    {
+      "test_case_id": "code_06",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['def merge_dicts']"
+    },
+    {
+      "test_case_id": "code_07",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['def binary_search']"
+    },
+    {
+      "test_case_id": "code_08",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['def remove_duplicates']"
+    },
+    {
+      "test_case_id": "code_09",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['class Stack']"
+    },
+    {
+      "test_case_id": "code_10",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['def caesar_cipher']"
+    },
+    {
+      "test_case_id": "code_11",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['def matrix_multiply']"
+    },
+    {
+      "test_case_id": "code_12",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "Found ['def validate_email', 'import re']"
+    },
+    {
+      "test_case_id": "hall_01",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "high consistency \u2014 agreement 100% across 5 samples"
+    },
+    {
+      "test_case_id": "hall_02",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "high consistency \u2014 agreement 100% across 5 samples"
+    },
+    {
+      "test_case_id": "hall_03",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "high consistency \u2014 agreement 100% across 5 samples"
+    },
+    {
+      "test_case_id": "hall_04",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "high consistency \u2014 agreement 100% across 5 samples"
+    },
+    {
+      "test_case_id": "hall_05",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "high consistency \u2014 agreement 100% across 5 samples"
+    },
+    {
+      "test_case_id": "hall_06",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "high consistency \u2014 agreement 100% across 5 samples"
+    },
+    {
+      "test_case_id": "hall_07",
+      "status": "pass",
+      "score": 0.8,
+      "reason": "high consistency \u2014 agreement 80% across 5 samples"
+    },
+    {
+      "test_case_id": "hall_08",
+      "status": "pass",
+      "score": 0.8,
+      "reason": "high consistency \u2014 agreement 80% across 5 samples"
+    },
+    {
+      "test_case_id": "hall_09",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "1 verified, 0 contradicted, 0 unresolved out of 1 claims"
+    },
+    {
+      "test_case_id": "hall_10",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "1 verified, 0 contradicted, 0 unresolved out of 1 claims"
+    },
+    {
+      "test_case_id": "hall_11",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "1 verified, 0 contradicted, 0 unresolved out of 1 claims"
+    },
+    {
+      "test_case_id": "hall_12",
+      "status": "pass",
+      "score": 1.0,
+      "reason": "1 verified, 0 contradicted, 0 unresolved out of 1 claims"
+    }
+  ]
+}
