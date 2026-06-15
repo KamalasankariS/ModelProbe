@@ -1,3 +1,8 @@
+[![ci](https://github.com/KamalasankariS/ModelProbe/actions/workflows/ci.yml/badge.svg)](https://github.com/KamalasankariS/ModelProbe/actions/workflows/ci.yml)
+[![nightly — integration + e2e](https://github.com/KamalasankariS/ModelProbe/actions/workflows/nightly.yml/badge.svg)](https://github.com/KamalasankariS/ModelProbe/actions/workflows/nightly.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB.svg?logo=python&logoColor=white)](https://python.org)
+
 # ModelProbe
 
 AI system evaluation and regression testing. Works locally with zero config, scales to a shared team server by changing one line.
@@ -219,11 +224,34 @@ All responses follow the envelope:
 
 ---
 
+## Testing
+
+Tests are organized into three tiers:
+
+```
+tests/
+  unit/           # isolated component tests (evaluators, trace, suite, storage, CLI, config)
+  regression/     # contract tests that lock down API shapes and behavior
+  security/       # penetration tests (SQL injection, input validation, API safety)
+```
+
+```bash
+# Run all tests
+pytest
+
+# Run by category
+pytest tests/unit/          # fast, isolated
+pytest tests/regression/    # contract stability
+pytest tests/security/      # security / pen testing
+```
+
+---
+
 ## Development setup
 
 ```bash
-git clone https://github.com/your-org/modelprobe
-cd modelprobe
+git clone https://github.com/KamalasankariS/ModelProbe
+cd ModelProbe
 pip install -e ".[server,dev]"
 pytest
 ```
