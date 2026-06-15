@@ -109,9 +109,14 @@ class LLMJudgeEvaluator:
 
         try:
             body = response.json()
-            content = body["choices"][0]["message"]["content"].strip()
+            choices = body.get("choices") or []
+            if not choices:
+                return self._skipped("llm_judge response missing 'choices'")
+            content = choices[0].get("message", {}).get("content", "").strip()
+            if not content:
+                return self._skipped("llm_judge response has empty content")
             verdict = json.loads(content)
-            passed = bool(verdict["passed"])
+            passed = bool(verdict.get("passed", False))
             score = float(verdict.get("score", 1.0 if passed else 0.0))
             reason = str(verdict.get("reason", ""))
 
