@@ -1,369 +1,564 @@
 {
   "model": "llama3",
   "total": 60,
-  "passed": 47,
-  "failed": 8,
+  "passed": 46,
+  "failed": 9,
   "errored": 5,
   "skipped": 0,
-  "pass_rate": 0.7833,
-  "avg_latency_s": 1.23,
+  "pass_rate": 0.7667,
+  "latency": {
+    "avg_ms": 1354.8,
+    "p50_ms": 525.5,
+    "p95_ms": 4431.1,
+    "min_ms": 295.7,
+    "max_ms": 5744.2
+  },
+  "tokens": {
+    "total": 1236,
+    "avg_per_request": 20.6,
+    "avg_tokens_per_sec": 11.9
+  },
+  "throughput": {
+    "evals_per_sec": 0.589,
+    "wall_time_s": 101.8
+  },
   "per_case": [
     {
       "test_case_id": "math_01",
+      "latency_ms": 5744.25,
+      "token_count": 2,
+      "tokens_per_sec": 0.3,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['12']"
     },
     {
       "test_case_id": "math_02",
+      "latency_ms": 322.45,
+      "token_count": 2,
+      "tokens_per_sec": 6.2,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['12']"
     },
     {
       "test_case_id": "math_03",
+      "latency_ms": 305.9,
+      "token_count": 2,
+      "tokens_per_sec": 6.5,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['16']"
     },
     {
       "test_case_id": "math_04",
+      "latency_ms": 421.76,
+      "token_count": 2,
+      "tokens_per_sec": 4.7,
       "status": "fail",
       "score": 0.0,
       "reason": "None of ['30'] found in output"
     },
     {
       "test_case_id": "math_05",
+      "latency_ms": 404.41,
+      "token_count": 4,
+      "tokens_per_sec": 9.9,
       "status": "fail",
       "score": 0.0,
       "reason": "None of ['5040'] found in output"
     },
     {
       "test_case_id": "math_06",
+      "latency_ms": 298.2,
+      "token_count": 2,
+      "tokens_per_sec": 6.7,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['80']"
     },
     {
       "test_case_id": "math_07",
+      "latency_ms": 339.96,
+      "token_count": 3,
+      "tokens_per_sec": 8.8,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['1024']"
     },
     {
       "test_case_id": "math_08",
+      "latency_ms": 300.9,
+      "token_count": 2,
+      "tokens_per_sec": 6.6,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['55']"
     },
     {
       "test_case_id": "math_09",
+      "latency_ms": 346.15,
+      "token_count": 3,
+      "tokens_per_sec": 8.7,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['5000']"
     },
     {
       "test_case_id": "math_10",
+      "latency_ms": 558.17,
+      "token_count": 4,
+      "tokens_per_sec": 7.2,
       "status": "fail",
       "score": 0.0,
       "reason": "None of ['153.86'] found in output"
     },
     {
       "test_case_id": "math_11",
+      "latency_ms": 332.66,
+      "token_count": 2,
+      "tokens_per_sec": 6.0,
       "status": "fail",
       "score": 0.0,
       "reason": "None of ['5'] found in output"
     },
     {
       "test_case_id": "math_12",
+      "latency_ms": 309.68,
+      "token_count": 2,
+      "tokens_per_sec": 6.5,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['12']"
     },
     {
       "test_case_id": "fact_01",
+      "latency_ms": 358.74,
+      "token_count": 3,
+      "tokens_per_sec": 8.4,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['Paris']"
     },
     {
       "test_case_id": "fact_02",
+      "latency_ms": 475.47,
+      "token_count": 4,
+      "tokens_per_sec": 8.4,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['Mercury']"
     },
     {
       "test_case_id": "fact_03",
+      "latency_ms": 295.66,
+      "token_count": 2,
+      "tokens_per_sec": 6.8,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['Au']"
     },
     {
       "test_case_id": "fact_04",
+      "latency_ms": 308.05,
+      "token_count": 2,
+      "tokens_per_sec": 6.5,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['7']"
     },
     {
       "test_case_id": "fact_05",
+      "latency_ms": 295.68,
+      "token_count": 2,
+      "tokens_per_sec": 6.8,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['100']"
     },
     {
       "test_case_id": "fact_06",
+      "latency_ms": 297.72,
+      "token_count": 2,
+      "tokens_per_sec": 6.7,
       "status": "fail",
       "score": 0.0,
       "reason": "None of ['Shakespeare'] found in output"
     },
     {
       "test_case_id": "fact_07",
+      "latency_ms": 358.61,
+      "token_count": 3,
+      "tokens_per_sec": 8.4,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['Skin']"
     },
     {
       "test_case_id": "fact_08",
+      "latency_ms": 1321.26,
+      "token_count": 24,
+      "tokens_per_sec": 18.2,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['CO2']"
     },
     {
       "test_case_id": "fact_09",
+      "latency_ms": 350.67,
+      "token_count": 3,
+      "tokens_per_sec": 8.6,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['1945']"
     },
     {
       "test_case_id": "fact_10",
+      "latency_ms": 398.72,
+      "token_count": 3,
+      "tokens_per_sec": 7.5,
       "status": "fail",
       "score": 0.0,
       "reason": "None of ['300000', '300,000'] found in output"
     },
     {
       "test_case_id": "fact_11",
+      "latency_ms": 313.27,
+      "token_count": 2,
+      "tokens_per_sec": 6.4,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['2']"
     },
     {
       "test_case_id": "fact_12",
+      "latency_ms": 525.5,
+      "token_count": 5,
+      "tokens_per_sec": 9.5,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['Hydrogen']"
     },
     {
       "test_case_id": "inst_01",
+      "latency_ms": 2100.83,
+      "token_count": 31,
+      "tokens_per_sec": 14.8,
       "status": "error",
       "score": 0.0,
       "reason": "Output is not valid JSON: Expecting value: line 1 column 1 (char 0)"
     },
     {
       "test_case_id": "inst_02",
+      "latency_ms": 2159.68,
+      "token_count": 34,
+      "tokens_per_sec": 15.7,
       "status": "error",
       "score": 0.0,
       "reason": "Output is not valid JSON: Expecting value: line 1 column 1 (char 0)"
     },
     {
       "test_case_id": "inst_03",
+      "latency_ms": 4245.73,
+      "token_count": 68,
+      "tokens_per_sec": 16.0,
       "status": "error",
       "score": 0.0,
       "reason": "Output is not valid JSON: Expecting value: line 1 column 1 (char 0)"
     },
     {
       "test_case_id": "inst_04",
+      "latency_ms": 1166.98,
+      "token_count": 16,
+      "tokens_per_sec": 13.7,
       "status": "pass",
       "score": 1.0,
       "reason": "Output validates against schema"
     },
     {
       "test_case_id": "inst_05",
+      "latency_ms": 3808.99,
+      "token_count": 61,
+      "tokens_per_sec": 16.0,
       "status": "error",
       "score": 0.0,
       "reason": "Output is not valid JSON: Expecting value: line 1 column 1 (char 0)"
     },
     {
       "test_case_id": "inst_06",
+      "latency_ms": 1967.61,
+      "token_count": 31,
+      "tokens_per_sec": 15.8,
       "status": "fail",
       "score": 0.0,
       "reason": "Pattern '(?i)(?=.*python)(?=.*versatile).+' not found"
     },
     {
       "test_case_id": "inst_07",
+      "latency_ms": 1927.37,
+      "token_count": 30,
+      "tokens_per_sec": 15.6,
       "status": "pass",
       "score": 1.0,
-      "reason": "Pattern matched: 'emily.williams@email.com'"
+      "reason": "Pattern matched: 'emily.jones@emailwizard.com'"
     },
     {
       "test_case_id": "inst_08",
+      "latency_ms": 581.06,
+      "token_count": 7,
+      "tokens_per_sec": 12.0,
       "status": "pass",
       "score": 1.0,
-      "reason": "Pattern matched: '2022-07-18'"
+      "reason": "Pattern matched: '2023-04-15'"
     },
     {
       "test_case_id": "inst_09",
+      "latency_ms": 470.84,
+      "token_count": 4,
+      "tokens_per_sec": 8.5,
       "status": "pass",
       "score": 1.0,
       "reason": "Exact match"
     },
     {
       "test_case_id": "inst_10",
+      "latency_ms": 813.11,
+      "token_count": 11,
+      "tokens_per_sec": 13.5,
       "status": "pass",
       "score": 1.0,
-      "reason": "Pattern matched: '14, 27, 51, 93'"
+      "reason": "Pattern matched: '14, 73, 28, 42'"
     },
     {
       "test_case_id": "inst_11",
+      "latency_ms": 5462.35,
+      "token_count": 101,
+      "tokens_per_sec": 18.5,
       "status": "error",
       "score": 0.0,
       "reason": "Output is not valid JSON: Expecting value: line 1 column 1 (char 0)"
     },
     {
       "test_case_id": "inst_12",
+      "latency_ms": 512.2,
+      "token_count": 6,
+      "tokens_per_sec": 11.7,
       "status": "pass",
       "score": 1.0,
-      "reason": "Pattern matched: '#43A047'"
+      "reason": "Pattern matched: '#34A85A'"
     },
     {
       "test_case_id": "code_01",
+      "latency_ms": 786.31,
+      "token_count": 12,
+      "tokens_per_sec": 15.3,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['def reverse_string']"
     },
     {
       "test_case_id": "code_02",
+      "latency_ms": 1095.52,
+      "token_count": 15,
+      "tokens_per_sec": 13.7,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['def is_palindrome']"
     },
     {
       "test_case_id": "code_03",
+      "latency_ms": 4177.92,
+      "token_count": 83,
+      "tokens_per_sec": 19.9,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['def fibonacci']"
     },
     {
       "test_case_id": "code_04",
+      "latency_ms": 2276.91,
+      "token_count": 44,
+      "tokens_per_sec": 19.3,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['def flatten']"
     },
     {
       "test_case_id": "code_05",
+      "latency_ms": 1414.7,
+      "token_count": 26,
+      "tokens_per_sec": 18.4,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['def count_vowels']"
     },
     {
       "test_case_id": "code_06",
+      "latency_ms": 1188.0,
+      "token_count": 21,
+      "tokens_per_sec": 17.7,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['def merge_dicts']"
     },
     {
       "test_case_id": "code_07",
+      "latency_ms": 4431.1,
+      "token_count": 85,
+      "tokens_per_sec": 19.2,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['def binary_search']"
     },
     {
       "test_case_id": "code_08",
+      "latency_ms": 2152.9,
+      "token_count": 41,
+      "tokens_per_sec": 19.0,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['def remove_duplicates']"
     },
     {
       "test_case_id": "code_09",
+      "latency_ms": 3583.23,
+      "token_count": 73,
+      "tokens_per_sec": 20.4,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['class Stack']"
     },
     {
       "test_case_id": "code_10",
+      "latency_ms": 3754.51,
+      "token_count": 74,
+      "tokens_per_sec": 19.7,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['def caesar_cipher']"
     },
     {
       "test_case_id": "code_11",
+      "latency_ms": 4357.88,
+      "token_count": 90,
+      "tokens_per_sec": 20.7,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['def matrix_multiply']"
     },
     {
       "test_case_id": "code_12",
+      "latency_ms": 3080.93,
+      "token_count": 55,
+      "tokens_per_sec": 17.9,
       "status": "pass",
       "score": 1.0,
       "reason": "Found ['def validate_email', 'import re']"
     },
     {
       "test_case_id": "hall_01",
+      "latency_ms": 324.33,
+      "token_count": 2,
+      "tokens_per_sec": 6.2,
       "status": "pass",
       "score": 1.0,
       "reason": "high consistency \u2014 agreement 100% across 5 samples"
     },
     {
       "test_case_id": "hall_02",
+      "latency_ms": 344.92,
+      "token_count": 3,
+      "tokens_per_sec": 8.7,
       "status": "pass",
       "score": 1.0,
       "reason": "high consistency \u2014 agreement 100% across 5 samples"
     },
     {
       "test_case_id": "hall_03",
+      "latency_ms": 346.92,
+      "token_count": 3,
+      "tokens_per_sec": 8.6,
       "status": "pass",
       "score": 1.0,
       "reason": "high consistency \u2014 agreement 100% across 5 samples"
     },
     {
       "test_case_id": "hall_04",
+      "latency_ms": 396.0,
+      "token_count": 4,
+      "tokens_per_sec": 10.1,
       "status": "pass",
       "score": 1.0,
       "reason": "high consistency \u2014 agreement 100% across 5 samples"
     },
     {
       "test_case_id": "hall_05",
+      "latency_ms": 425.02,
+      "token_count": 5,
+      "tokens_per_sec": 11.8,
       "status": "pass",
       "score": 1.0,
       "reason": "high consistency \u2014 agreement 100% across 5 samples"
     },
     {
       "test_case_id": "hall_06",
-      "status": "pass",
-      "score": 0.6,
-      "reason": "moderate consistency \u2014 agreement 60% across 5 samples"
+      "latency_ms": 375.54,
+      "token_count": 4,
+      "tokens_per_sec": 10.7,
+      "status": "fail",
+      "score": 0.0,
+      "reason": "low consistency (likely hallucination) \u2014 agreement 0% across 5 samples"
     },
     {
       "test_case_id": "hall_07",
+      "latency_ms": 314.81,
+      "token_count": 2,
+      "tokens_per_sec": 6.4,
       "status": "pass",
       "score": 1.0,
       "reason": "high consistency \u2014 agreement 100% across 5 samples"
     },
     {
       "test_case_id": "hall_08",
+      "latency_ms": 471.14,
+      "token_count": 6,
+      "tokens_per_sec": 12.7,
       "status": "fail",
-      "score": 0.24,
-      "reason": "low consistency (likely hallucination) \u2014 agreement 24% across 5 samples"
+      "score": 0.4,
+      "reason": "low consistency (likely hallucination) \u2014 agreement 40% across 5 samples"
     },
     {
       "test_case_id": "hall_09",
+      "latency_ms": 577.49,
+      "token_count": 8,
+      "tokens_per_sec": 13.9,
       "status": "pass",
       "score": 1.0,
       "reason": "1 verified, 0 contradicted, 0 unresolved out of 1 claims"
     },
     {
       "test_case_id": "hall_10",
+      "latency_ms": 1347.38,
+      "token_count": 23,
+      "tokens_per_sec": 17.1,
       "status": "pass",
       "score": 1.0,
       "reason": "1 verified, 0 contradicted, 0 unresolved out of 1 claims"
     },
     {
       "test_case_id": "hall_11",
+      "latency_ms": 785.84,
+      "token_count": 11,
+      "tokens_per_sec": 14.0,
       "status": "pass",
       "score": 1.0,
       "reason": "1 verified, 0 contradicted, 0 unresolved out of 1 claims"
     },
     {
       "test_case_id": "hall_12",
+      "latency_ms": 3075.13,
+      "token_count": 61,
+      "tokens_per_sec": 19.8,
       "status": "pass",
       "score": 1.0,
       "reason": "1 verified, 0 contradicted, 0 unresolved out of 1 claims"
