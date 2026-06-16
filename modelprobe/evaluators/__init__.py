@@ -24,6 +24,8 @@ from modelprobe.evaluators.regex import RegexEvaluator
 from modelprobe.evaluators.json_schema import JsonSchemaEvaluator
 from modelprobe.evaluators.llm_judge import LLMJudgeEvaluator
 from modelprobe.evaluators.hallucination import HallucinationEvaluator
+from modelprobe.evaluators.toxicity import ToxicityEvaluator
+from modelprobe.evaluators.similarity import SimilarityEvaluator
 
 _REGISTRY = {
     "exact": ExactEvaluator,
@@ -32,6 +34,8 @@ _REGISTRY = {
     "json_schema": JsonSchemaEvaluator,
     "llm_judge": LLMJudgeEvaluator,
     "hallucination": HallucinationEvaluator,
+    "toxicity": ToxicityEvaluator,
+    "similarity": SimilarityEvaluator,
 }
 
 
@@ -65,5 +69,7 @@ __all__ = [
     "JsonSchemaEvaluator",
     "LLMJudgeEvaluator",
     "HallucinationEvaluator",
+    "ToxicityEvaluator",
+    "SimilarityEvaluator",
     "get_evaluator",
 ]
