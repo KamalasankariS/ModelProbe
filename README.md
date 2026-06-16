@@ -3,6 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB.svg?logo=python&logoColor=white)](https://python.org)
 [![codecov](https://codecov.io/gh/KamalasankariS/ModelProbe/graph/badge.svg)](https://codecov.io/gh/KamalasankariS/ModelProbe)
+[![PyPI](https://img.shields.io/pypi/v/modelprobe)](https://pypi.org/project/modelprobe/)
 
 # ModelProbe
 
