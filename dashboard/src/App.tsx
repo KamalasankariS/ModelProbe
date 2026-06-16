@@ -1,4 +1,5 @@
-import { Routes, Route, NavLink } from "react-router-dom";
+import { Routes, Route, NavLink, Link } from "react-router-dom";
+import Landing from "./pages/Landing";
 import Overview from "./pages/Overview";
 import SuiteList from "./pages/SuiteList";
 import SuiteDetail from "./pages/SuiteDetail";
@@ -10,6 +11,7 @@ function NavItem({ to, label }: { to: string; label: string }) {
   return (
     <NavLink
       to={to}
+      end
       className={({ isActive }) =>
         `px-3 py-2 rounded text-sm font-medium transition-colors ${
           isActive ? "bg-accent text-white" : "text-muted hover:text-white"
@@ -21,15 +23,17 @@ function NavItem({ to, label }: { to: string; label: string }) {
   );
 }
 
-export default function App() {
+function DashboardLayout() {
   return (
-    <div className="min-h-screen bg-surface text-white flex flex-col">
+    <div className="min-h-screen bg-surface text-white flex flex-col dashboard-shell">
       <header className="border-b border-border px-6 py-3 flex items-center gap-6">
-        <span className="font-bold text-lg tracking-tight">ModelProbe</span>
+        <Link to="/" className="font-bold text-lg tracking-tight hover:text-accent transition-colors">
+          ModelProbe
+        </Link>
         <nav className="flex gap-2">
-          <NavItem to="/" label="Overview" />
-          <NavItem to="/suites" label="Suites" />
-          <NavItem to="/playground" label="Playground" />
+          <NavItem to="/dashboard" label="Overview" />
+          <NavItem to="/dashboard/suites" label="Suites" />
+          <NavItem to="/dashboard/playground" label="Playground" />
         </nav>
       </header>
       <main className="flex-1 p-6">
@@ -43,5 +47,14 @@ export default function App() {
         </Routes>
       </main>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/dashboard/*" element={<DashboardLayout />} />
+    </Routes>
   );
 }
