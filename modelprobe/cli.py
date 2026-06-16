@@ -75,9 +75,11 @@ def migrate():
 @click.argument("suite")
 @click.option("--version", "-v", required=True, help="Suite version string.")
 @click.option("--file", "-f", "test_file", required=True, help="Path to JSON test cases file.")
+@click.option("--model", "-m", default=None,
+              help="Model to query, e.g. ollama/llama3, openai/gpt-4o, anthropic/claude-sonnet-4-20250514.")
 @click.option("--run-group", default=None, help="Optional run group label.")
 @click.option("--commit", default=None, help="Optional git commit hash.")
-def run_suite_cmd(suite: str, version: str, test_file: str, run_group: str, commit: str):
+def run_suite_cmd(suite: str, version: str, test_file: str, model: str, run_group: str, commit: str):
     """Run a suite from a JSON test cases file.
 
     The JSON file must be a list of test case objects::
@@ -85,16 +87,16 @@ def run_suite_cmd(suite: str, version: str, test_file: str, run_group: str, comm
         [
           {
             "test_case_id": "tc_001",
-            "input": "...",
-            "expected_output": "...",
+            "input": "What is 2+2?",
+            "expected_output": "4",
             "eval_type": "contains",
-            "eval_config": {"values": ["..."]}
+            "eval_config": {"values": ["4"]}
           }
         ]
 
     Usage::
 
-        modelprobe run-suite my-agent --version v2 --file cases.json
+        modelprobe run-suite my-agent -v v1 -f cases.json --model ollama/llama3
     """
     path = Path(test_file)
     if not path.exists():
@@ -113,15 +115,27 @@ def run_suite_cmd(suite: str, version: str, test_file: str, run_group: str, comm
 
     from modelprobe.suite import run_suite
 
-    click.echo(f"Running suite '{suite}' version '{version}' with {len(test_cases)} test case(s)...")
-    click.echo("Note: Using echo runner (input echoed as output). "
-               "For real evaluation, use run_suite() in Python with a custom runner.")
+    if model:
+        from modelprobe.models import get_model
+        adapter = get_model(model)
+        click.echo(f"Running suite '{suite}' version '{version}' with {len(test_cases)} test case(s)")
+        click.echo(f"Model: {model}")
+
+        def model_runner(tc):
+            prompt = tc.get("input", "")
+            resp = adapter.generate(prompt)
+            return resp.text
+        runner = model_runner
+    else:
+        click.echo(f"Running suite '{suite}' version '{version}' with {len(test_cases)} test case(s)")
+        click.echo("Note: No --model specified, using echo runner (input echoed as output).")
+        runner = lambda tc: tc.get("input", "")
 
     result = run_suite(
         suite_name=suite,
         version=version,
         test_cases=test_cases,
-        runner=lambda tc: tc.get("input", ""),
+        runner=runner,
         run_group=run_group,
         commit_hash=commit,
     )
