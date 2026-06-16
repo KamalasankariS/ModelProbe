@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -11,6 +12,10 @@ import {
   Eye,
   Brain,
   CheckCircle2,
+  Play,
+  Search,
+  FileCheck,
+  ShieldAlert,
 } from "lucide-react";
 
 function GitHubSvg({ className }: { className?: string }) {
@@ -49,8 +54,8 @@ function Nav() {
           <a href="#benchmarks" className="hover:text-charcoal transition-colors">
             Benchmarks
           </a>
-          <a href="#playground" className="hover:text-charcoal transition-colors">
-            Playground
+          <a href="#try-it" className="hover:text-charcoal transition-colors">
+            Try It
           </a>
           <a
             href="https://github.com/KamalasankariS/ModelProbe"
@@ -69,10 +74,10 @@ function Nav() {
             Dashboard
           </Link>
           <a
-            href="#get-started"
+            href="#try-it"
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-warm-400 text-charcoal font-semibold text-sm rounded-full hover:bg-warm-300 transition-colors shadow-sm"
           >
-            Get Started
+            Try It Live
           </a>
         </div>
       </div>
@@ -123,18 +128,18 @@ function Hero() {
             className="mt-10 flex flex-wrap items-center gap-4"
           >
             <a
-              href="#get-started"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-charcoal text-cream font-semibold text-sm rounded-full hover:bg-charcoal/90 transition-colors shadow-md"
+              href="#try-it"
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-warm-400 text-charcoal font-semibold text-sm rounded-full hover:bg-warm-300 transition-colors shadow-md"
             >
-              Get Started Free
+              Try It Live
               <ArrowRight className="w-4 h-4" />
             </a>
-            <Link
-              to="/dashboard/playground"
+            <a
+              href="#get-started"
               className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-charcoal font-semibold text-sm rounded-full border border-charcoal/10 hover:border-charcoal/20 transition-colors"
             >
-              Try Playground
-            </Link>
+              Install via pip
+            </a>
           </motion.div>
         </motion.div>
 
@@ -193,7 +198,7 @@ function Hero() {
 
 function SocialProof() {
   const stats = [
-    { value: "5", label: "Evaluator Types" },
+    { value: "8", label: "Evaluator Types" },
     { value: "66%", label: "Code Coverage" },
     { value: "0-17%", label: "Hallucination Detection" },
     { value: "132+", label: "Tests Passing" },
@@ -305,9 +310,9 @@ function Features() {
     },
     {
       icon: Shield,
-      title: "5 Built-in Evaluators",
+      title: "8 Built-in Evaluators",
       description:
-        "Exact match, contains, regex, JSON schema, and hallucination. Each returns a normalized score, pass/fail status, and detailed reasoning.",
+        "Exact match, contains, regex, JSON schema, hallucination, toxicity, similarity, and LLM judge. Each returns a normalized score with reasoning.",
     },
     {
       icon: GitCompare,
@@ -471,87 +476,238 @@ function Benchmarks() {
   );
 }
 
-function PlaygroundPreview() {
+interface EvalResult {
+  passed: boolean;
+  score: number;
+  reason: string;
+  status: string;
+  evaluator: string;
+  detail?: Record<string, unknown>;
+}
+
+const EVAL_TYPES = [
+  { value: "exact", label: "Exact Match", icon: FileCheck },
+  { value: "contains", label: "Contains", icon: Search },
+  { value: "regex", label: "Regex", icon: Terminal },
+  { value: "json_schema", label: "JSON Schema", icon: Shield },
+  { value: "toxicity", label: "Toxicity", icon: ShieldAlert },
+  { value: "similarity", label: "Similarity", icon: BarChart3 },
+];
+
+const DEMO_CONFIGS: Record<string, { output: string; expected: string; config: string }> = {
+  exact: {
+    output: "The capital of France is Paris.",
+    expected: "The capital of France is Paris.",
+    config: '{"case_sensitive": true}',
+  },
+  contains: {
+    output: "The total invoice amount is $1,250.00 for services rendered in Q3 2024.",
+    expected: "",
+    config: '{"values": ["invoice", "$1,250.00", "Q3"], "mode": "all"}',
+  },
+  regex: {
+    output: "Order #ORD-2024-78432 has been confirmed and will ship by 2024-12-15.",
+    expected: "",
+    config: '{"pattern": "ORD-\\\\d{4}-\\\\d{5}"}',
+  },
+  json_schema: {
+    output: '{"name": "Alice", "age": 30, "role": "engineer"}',
+    expected: "",
+    config: '{"schema": {"type": "object", "required": ["name", "age"], "properties": {"name": {"type": "string"}, "age": {"type": "integer"}}}}',
+  },
+  toxicity: {
+    output: "Thank you for your patience. I'd be happy to help you resolve this billing issue. Let me look into your account right away.",
+    expected: "",
+    config: '{"categories": ["profanity", "hate_speech", "violence", "pii"]}',
+  },
+  similarity: {
+    output: "Paris is the capital city of France, located along the Seine River.",
+    expected: "The capital of France is Paris, situated on the banks of the Seine.",
+    config: '{"strategy": "tfidf", "threshold": 0.5}',
+  },
+};
+
+function LivePlayground() {
+  const [evalType, setEvalType] = useState("contains");
+  const [output, setOutput] = useState(DEMO_CONFIGS["contains"].output);
+  const [expected, setExpected] = useState(DEMO_CONFIGS["contains"].expected);
+  const [config, setConfig] = useState(DEMO_CONFIGS["contains"].config);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<EvalResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleTypeChange = (type: string) => {
+    setEvalType(type);
+    const demo = DEMO_CONFIGS[type];
+    setOutput(demo.output);
+    setExpected(demo.expected);
+    setConfig(demo.config);
+    setResult(null);
+    setError(null);
+  };
+
+  const handleRun = async () => {
+    setLoading(true);
+    setError(null);
+    setResult(null);
+
+    let parsedConfig: Record<string, unknown> = {};
+    try {
+      parsedConfig = JSON.parse(config);
+    } catch {
+      setError("Invalid JSON in config");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch(`${window.location.origin}/api/evaluate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          output,
+          eval_type: evalType,
+          expected: expected || null,
+          config: parsedConfig,
+        }),
+      });
+      const envelope = await res.json();
+      setResult(envelope.data as EvalResult);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Request failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <section className="py-20 md:py-28 bg-white" id="playground">
-      <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
-        <div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <span className="inline-flex items-center gap-2 px-3 py-1 bg-warm-50 border border-warm-200 rounded-full text-xs font-semibold text-warm-700 tracking-wide uppercase mb-6">
-              <Zap className="w-3 h-3" />
-              Interactive
-            </span>
-            <h2 className="font-display font-bold text-charcoal text-3xl md:text-4xl leading-tight">
-              Test evaluations
-              <br />
-              in real time
-            </h2>
-            <p className="mt-5 text-charcoal/60 leading-relaxed">
-              The built-in Playground lets you paste any model output and instantly
-              run it through any evaluator. See pass/fail, scores, and detailed
-              reasoning — no code required.
-            </p>
-            <Link
-              to="/dashboard/playground"
-              className="inline-flex items-center gap-2 mt-8 px-7 py-3.5 bg-charcoal text-cream font-semibold text-sm rounded-full hover:bg-charcoal/90 transition-colors shadow-md"
-            >
-              Open Playground
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
-        </div>
+    <section className="py-20 md:py-28 bg-white" id="try-it">
+      <div className="max-w-6xl mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="bg-charcoal rounded-xl shadow-2xl overflow-hidden border border-charcoal/20"
+          className="text-center mb-12"
         >
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
-            <div className="w-3 h-3 rounded-full bg-red-400/80" />
-            <div className="w-3 h-3 rounded-full bg-yellow-400/80" />
-            <div className="w-3 h-3 rounded-full bg-green-400/80" />
-            <span className="ml-2 text-xs text-white/40 font-mono">playground</span>
+          <span className="inline-flex items-center gap-2 px-3 py-1 bg-warm-50 border border-warm-200 rounded-full text-xs font-semibold text-warm-700 tracking-wide uppercase mb-6">
+            <Zap className="w-3 h-3" />
+            Live Demo
+          </span>
+          <h2 className="font-display font-bold text-charcoal text-3xl md:text-4xl">
+            Try it right now
+          </h2>
+          <p className="mt-4 text-charcoal/50 max-w-lg mx-auto">
+            Pick an evaluator, edit the text, and hit Run. This calls the real ModelProbe API — no install needed.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-4xl mx-auto"
+        >
+          {/* Evaluator selector */}
+          <div className="flex gap-2 flex-wrap mb-6">
+            {EVAL_TYPES.map((ev) => (
+              <button
+                key={ev.value}
+                onClick={() => handleTypeChange(ev.value)}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  evalType === ev.value
+                    ? "bg-charcoal text-cream shadow-md"
+                    : "bg-sand text-charcoal/60 hover:bg-sand hover:text-charcoal border border-transparent"
+                }`}
+              >
+                <ev.icon className="w-3.5 h-3.5" />
+                {ev.label}
+              </button>
+            ))}
           </div>
-          <div className="p-5 space-y-4">
+
+          {/* Input area */}
+          <div className="bg-cream border border-sand rounded-2xl p-6 space-y-4">
             <div>
-              <div className="text-xs text-white/40 mb-1.5">Evaluator</div>
-              <div className="flex gap-2">
-                {["Exact", "Contains", "Regex", "JSON", "Hallucination"].map((e, i) => (
-                  <span
-                    key={e}
-                    className={`px-2.5 py-1 rounded text-xs font-medium ${
-                      i === 4
-                        ? "bg-warm-400 text-charcoal"
-                        : "bg-white/10 text-white/50"
-                    }`}
-                  >
-                    {e}
-                  </span>
-                ))}
-              </div>
+              <label className="block text-sm font-medium text-charcoal/70 mb-1.5">Model Output</label>
+              <textarea
+                value={output}
+                onChange={(e) => setOutput(e.target.value)}
+                rows={3}
+                className="w-full bg-white border border-sand rounded-xl px-4 py-3 text-sm text-charcoal placeholder-charcoal/30 focus:outline-none focus:border-warm-400 focus:ring-2 focus:ring-warm-400/20 transition-all resize-none"
+                placeholder="Paste any model output..."
+              />
             </div>
+
+            {(evalType === "exact" || evalType === "similarity") && (
+              <div>
+                <label className="block text-sm font-medium text-charcoal/70 mb-1.5">Expected Output</label>
+                <input
+                  value={expected}
+                  onChange={(e) => setExpected(e.target.value)}
+                  className="w-full bg-white border border-sand rounded-xl px-4 py-3 text-sm text-charcoal placeholder-charcoal/30 focus:outline-none focus:border-warm-400 focus:ring-2 focus:ring-warm-400/20 transition-all"
+                  placeholder="Expected output..."
+                />
+              </div>
+            )}
+
             <div>
-              <div className="text-xs text-white/40 mb-1.5">Model Output</div>
-              <div className="bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white/70 font-mono">
-                The capital of France is Lyon.
-              </div>
+              <label className="block text-sm font-medium text-charcoal/70 mb-1.5">Config (JSON)</label>
+              <textarea
+                value={config}
+                onChange={(e) => setConfig(e.target.value)}
+                rows={2}
+                className="w-full bg-white border border-sand rounded-xl px-4 py-3 text-sm text-charcoal font-mono placeholder-charcoal/30 focus:outline-none focus:border-warm-400 focus:ring-2 focus:ring-warm-400/20 transition-all resize-none"
+              />
             </div>
-            <div className="flex items-center gap-3 pt-2">
-              <span className="px-2.5 py-1 bg-red-500/20 text-red-400 text-xs font-semibold rounded">
-                FAIL
-              </span>
-              <span className="text-white/80 text-sm font-bold">42%</span>
-              <span className="text-white/40 text-xs">via hallucination</span>
-            </div>
-            <div className="text-xs text-white/30">
-              Low self-consistency: key tokens diverged across 5 samples
-            </div>
+
+            <button
+              onClick={handleRun}
+              disabled={loading || !output.trim()}
+              className="inline-flex items-center gap-2 px-8 py-3 bg-warm-400 text-charcoal font-semibold text-sm rounded-full hover:bg-warm-300 disabled:opacity-40 transition-all shadow-sm"
+            >
+              <Play className="w-4 h-4" />
+              {loading ? "Evaluating..." : "Run Evaluation"}
+            </button>
           </div>
+
+          {/* Result */}
+          {error && (
+            <div className="mt-4 bg-red-50 border border-red-200 rounded-xl px-5 py-3 text-sm text-red-700">
+              {error}
+            </div>
+          )}
+
+          {result && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 bg-cream border border-sand rounded-2xl p-6"
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <span
+                  className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide ${
+                    result.status === "pass"
+                      ? "bg-green-100 text-green-700"
+                      : result.status === "fail"
+                      ? "bg-red-100 text-red-700"
+                      : "bg-yellow-100 text-yellow-700"
+                  }`}
+                >
+                  {result.status}
+                </span>
+                <span className="text-3xl font-bold text-charcoal">
+                  {(result.score * 100).toFixed(0)}%
+                </span>
+                <span className="text-sm text-charcoal/40">via {result.evaluator}</span>
+              </div>
+              <p className="text-sm text-charcoal/60">{result.reason}</p>
+              {result.detail && (
+                <pre className="mt-4 bg-white border border-sand rounded-xl p-4 text-xs text-charcoal/50 overflow-x-auto font-mono">
+                  {JSON.stringify(result.detail, null, 2)}
+                </pre>
+              )}
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </section>
@@ -662,7 +818,7 @@ export default function Landing() {
       <About />
       <Features />
       <Benchmarks />
-      <PlaygroundPreview />
+      <LivePlayground />
       <GetStarted />
       <Footer />
     </div>
