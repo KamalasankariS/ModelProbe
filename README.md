@@ -23,9 +23,11 @@ flowchart TD
     C --> C4[json_schema]
     C --> C5[llm_judge]
     C --> C6[hallucination]
+    C --> C7[toxicity]
+    C --> C8[similarity]
     C6 --> H1[Self-Consistency]
     C6 --> H2[Wikidata Grounding]
-    C1 & C2 & C3 & C4 & C5 & H1 & H2 --> D[Pass / Fail + Score]
+    C1 & C2 & C3 & C4 & C5 & H1 & H2 & C7 & C8 --> D[Pass / Fail + Score]
     D --> E[(SQLite or API)]
     E --> F[Dashboard]
 ```
@@ -170,6 +172,8 @@ modelprobe migrate
 | `json_schema` | JSON Schema validation. `config: {"schema": {...}}` |
 | `llm_judge` | LLM-graded rubric. `config: {"model": "...", "rubric": "..."}` |
 | `hallucination` | Detects hallucinations via self-consistency and Wikidata verification. See below. |
+| `toxicity` | Pattern-based toxicity detection across 6 categories (profanity, hate speech, violence, self-harm, sexual, PII). `config: {"categories": [...], "threshold": 0.5}` |
+| `similarity` | Semantic similarity between output and expected text. Strategies: `tfidf` (default), `jaccard`, `ngram`. `config: {"strategy": "tfidf", "threshold": 0.7}` |
 
 All evaluators return `{passed, score, reason, status}` where `status` is one of `pass`, `fail`, `error`, `skipped`.
 
