@@ -25,6 +25,8 @@ const EVALUATORS = [
   { value: "regex", label: "Regex" },
   { value: "json_schema", label: "JSON Schema" },
   { value: "hallucination", label: "Hallucination" },
+  { value: "toxicity", label: "Toxicity" },
+  { value: "similarity", label: "Similarity" },
 ];
 
 const CONFIG_HINTS: Record<string, string> = {
@@ -34,6 +36,8 @@ const CONFIG_HINTS: Record<string, string> = {
   json_schema: '{"schema": {"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]}}',
   hallucination:
     '{"strategy": "consistency", "prompt": "What is 2+2?", "model": "llama3", "endpoint": "http://localhost:11434/api/generate", "samples": 3}',
+  toxicity: '{"threshold": 0.5}',
+  similarity: '{"strategy": "tfidf", "threshold": 0.7}',
 };
 
 export default function Playground() {
@@ -60,7 +64,7 @@ export default function Playground() {
 
     let parsedConfig: Record<string, unknown> = {};
     try {
-      parsedConfig = JSON.parse(config);
+      parsedConfig = JSON.parse(config.trim() || "{}");
     } catch {
       setError("Invalid JSON in config");
       setLoading(false);
@@ -102,22 +106,22 @@ export default function Playground() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div className="lg:col-span-2 flex flex-col gap-4">
-        <h1 className="text-xl font-bold">Playground</h1>
+      <div className="lg:col-span-2 flex flex-col gap-5">
+        <h1 className="text-2xl font-bold text-charcoal">Playground</h1>
 
         <Card>
           <div className="flex flex-col gap-4">
             <div>
-              <label className="block text-sm text-muted mb-1">Evaluator</label>
+              <label className="block text-xs font-medium text-stone-400 uppercase tracking-wider mb-2">Evaluator</label>
               <div className="flex gap-2 flex-wrap">
                 {EVALUATORS.map((ev) => (
                   <button
                     key={ev.value}
                     onClick={() => handleEvalTypeChange(ev.value)}
-                    className={`px-3 py-1.5 rounded text-sm transition-colors ${
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                       evalType === ev.value
-                        ? "bg-accent text-white"
-                        : "bg-card text-muted hover:text-white border border-border"
+                        ? "bg-amber-100 text-amber-800 ring-1 ring-amber-300"
+                        : "bg-cream text-stone-500 hover:text-charcoal hover:bg-sand ring-1 ring-border"
                     }`}
                   >
                     {ev.label}
@@ -127,53 +131,53 @@ export default function Playground() {
             </div>
 
             <div>
-              <label className="block text-sm text-muted mb-1">Model Output</label>
+              <label className="block text-xs font-medium text-stone-400 uppercase tracking-wider mb-1.5">Model Output</label>
               <textarea
                 value={output}
                 onChange={(e) => setOutput(e.target.value)}
                 placeholder="Paste or type the model output to evaluate..."
                 rows={4}
-                className="w-full bg-surface border border-border rounded px-3 py-2 text-sm text-white placeholder-muted focus:outline-none focus:border-accent"
+                className="w-full bg-cream border border-border rounded-lg px-3 py-2.5 text-sm text-charcoal placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-amber-300 transition-all"
               />
             </div>
 
-            {(evalType === "exact" || evalType === "contains") && (
+            {(evalType === "exact" || evalType === "contains" || evalType === "similarity") && (
               <div>
-                <label className="block text-sm text-muted mb-1">
-                  Expected Output <span className="text-muted">(optional for some evaluators)</span>
+                <label className="block text-xs font-medium text-stone-400 uppercase tracking-wider mb-1.5">
+                  Expected Output
                 </label>
                 <input
                   value={expected}
                   onChange={(e) => setExpected(e.target.value)}
                   placeholder="Expected output..."
-                  className="w-full bg-surface border border-border rounded px-3 py-2 text-sm text-white placeholder-muted focus:outline-none focus:border-accent"
+                  className="w-full bg-cream border border-border rounded-lg px-3 py-2.5 text-sm text-charcoal placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-amber-300 transition-all"
                 />
               </div>
             )}
 
             <div>
-              <label className="block text-sm text-muted mb-1">Config (JSON)</label>
+              <label className="block text-xs font-medium text-stone-400 uppercase tracking-wider mb-1.5">Config (JSON)</label>
               <textarea
                 value={config}
                 onChange={(e) => setConfig(e.target.value)}
                 rows={3}
-                className="w-full bg-surface border border-border rounded px-3 py-2 text-sm text-white font-mono placeholder-muted focus:outline-none focus:border-accent"
+                className="w-full bg-cream border border-border rounded-lg px-3 py-2.5 text-sm text-charcoal font-mono placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:border-amber-300 transition-all"
               />
             </div>
 
             <button
               onClick={handleRun}
               disabled={loading || !output.trim()}
-              className="self-start px-6 py-2 bg-accent text-white rounded font-medium text-sm hover:opacity-90 disabled:opacity-40 transition-opacity"
+              className="self-start px-6 py-2.5 bg-amber-600 text-white rounded-lg font-medium text-sm hover:bg-amber-700 disabled:opacity-40 transition-all shadow-sm"
             >
-              {loading ? "Evaluating..." : "Run"}
+              {loading ? "Evaluating..." : "Run Evaluation"}
             </button>
           </div>
         </Card>
 
         {error && (
-          <Card>
-            <p className="text-red-400 text-sm">{error}</p>
+          <Card className="border-red-200 bg-red-50/50">
+            <p className="text-red-700 text-sm">{error}</p>
           </Card>
         )}
 
@@ -181,14 +185,14 @@ export default function Playground() {
           <Card>
             <div className="flex items-center gap-4 mb-4">
               <StatusBadge status={result.status as "pass" | "fail" | "error" | "skipped"} />
-              <span className="text-2xl font-bold">
+              <span className="text-3xl font-bold text-charcoal">
                 {(result.score * 100).toFixed(0)}%
               </span>
-              <span className="text-muted text-sm">via {result.evaluator}</span>
+              <span className="text-stone-400 text-sm">via {result.evaluator}</span>
             </div>
-            <p className="text-sm text-muted">{result.reason}</p>
+            <p className="text-sm text-stone-600">{result.reason}</p>
             {result.detail && (
-              <pre className="mt-3 text-xs text-muted bg-surface rounded p-3 overflow-x-auto">
+              <pre className="mt-3 text-xs text-stone-600 bg-cream rounded-lg p-4 overflow-x-auto">
                 {JSON.stringify(result.detail, null, 2)}
               </pre>
             )}
@@ -197,20 +201,20 @@ export default function Playground() {
       </div>
 
       <div className="flex flex-col gap-4">
-        <h2 className="text-sm font-bold text-muted uppercase tracking-wider">History</h2>
+        <h2 className="text-xs font-semibold text-stone-400 uppercase tracking-wider">History</h2>
         {history.length === 0 && (
-          <p className="text-sm text-muted">Run an evaluation to see results here.</p>
+          <p className="text-sm text-stone-400">Run an evaluation to see results here.</p>
         )}
         {history.map((entry) => (
           <Card key={entry.id}>
             <div className="flex items-center justify-between mb-1">
               <StatusBadge status={entry.result.status as "pass" | "fail" | "error" | "skipped"} />
-              <span className="text-xs text-muted">{entry.timestamp}</span>
+              <span className="text-xs text-stone-400">{entry.timestamp}</span>
             </div>
-            <p className="text-xs text-muted truncate">{entry.output}</p>
-            <div className="flex items-center justify-between mt-1">
-              <span className="text-xs text-muted">{entry.eval_type}</span>
-              <span className="text-xs font-mono">
+            <p className="text-xs text-stone-500 truncate mt-1">{entry.output}</p>
+            <div className="flex items-center justify-between mt-2">
+              <span className="text-xs text-stone-400">{entry.eval_type}</span>
+              <span className="text-xs font-semibold text-charcoal">
                 {(entry.result.score * 100).toFixed(0)}%
               </span>
             </div>

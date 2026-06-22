@@ -17,43 +17,43 @@ function Section({
   const [open, setOpen] = useState(defaultOpen);
   if (rows.length === 0) return null;
   return (
-    <div className="border border-border rounded-lg overflow-hidden">
+    <div className="border border-border rounded-xl overflow-hidden shadow-sm">
       <button
-        className={`w-full flex justify-between items-center px-4 py-3 font-medium text-sm ${colorClass} hover:brightness-110`}
+        className={`w-full flex justify-between items-center px-5 py-3 font-medium text-sm ${colorClass} hover:brightness-95 transition-all`}
         onClick={() => setOpen((o) => !o)}
       >
         <span>
           {title} ({rows.length})
         </span>
-        <span>{open ? "▲" : "▼"}</span>
+        <span className="text-xs">{open ? "▲" : "▼"}</span>
       </button>
       {open && (
         <table className="w-full text-xs">
           <thead>
-            <tr className="text-left text-muted border-b border-border bg-panel">
-              <th className="px-4 py-2">Test Case</th>
-              <th className="px-4 py-2">Expected</th>
-              <th className="px-4 py-2">v1</th>
-              <th className="px-4 py-2">v2</th>
-              <th className="px-4 py-2">Reason</th>
+            <tr className="text-left text-stone-400 border-b border-border bg-cream">
+              <th className="px-5 py-2 font-medium uppercase tracking-wider">Test Case</th>
+              <th className="px-5 py-2 font-medium uppercase tracking-wider">Expected</th>
+              <th className="px-5 py-2 font-medium uppercase tracking-wider">v1</th>
+              <th className="px-5 py-2 font-medium uppercase tracking-wider">v2</th>
+              <th className="px-5 py-2 font-medium uppercase tracking-wider">Reason</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((r) => (
-              <tr key={r.test_case_id} className="border-b border-border/50">
-                <td className="px-4 py-2 font-mono">{r.test_case_id}</td>
-                <td className="px-4 py-2 text-muted truncate max-w-xs">{r.expected_output ?? "—"}</td>
-                <td className="px-4 py-2">
+              <tr key={r.test_case_id} className="border-b border-border/50 bg-white">
+                <td className="px-5 py-2 font-mono text-charcoal">{r.test_case_id}</td>
+                <td className="px-5 py-2 text-stone-500 truncate max-w-xs">{r.expected_output ?? "—"}</td>
+                <td className="px-5 py-2">
                   {r.v1_status && (
                     <StatusBadge status={r.v1_status as "pass" | "fail" | "error" | "skipped"} />
                   )}
                 </td>
-                <td className="px-4 py-2">
+                <td className="px-5 py-2">
                   {r.v2_status && (
                     <StatusBadge status={r.v2_status as "pass" | "fail" | "error" | "skipped"} />
                   )}
                 </td>
-                <td className="px-4 py-2 text-muted">{r.v2_reason ?? r.v1_reason ?? "—"}</td>
+                <td className="px-5 py-2 text-stone-500">{r.v2_reason ?? r.v1_reason ?? "—"}</td>
               </tr>
             ))}
           </tbody>
@@ -86,20 +86,20 @@ export default function CompareView() {
       });
   }, [name, v1, v2]);
 
-  if (loading) return <div className="text-muted">Loading...</div>;
-  if (error) return <div className="text-danger">{error}</div>;
+  if (loading) return <div className="text-stone-400 py-12 text-center">Loading...</div>;
+  if (error) return <div className="text-red-600">{error}</div>;
   if (!data) return null;
 
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-semibold">
+      <h1 className="text-2xl font-bold text-charcoal">
         {name}: {v1} vs {v2}
       </h1>
-      <Section title="Regressed" rows={data.regressed} defaultOpen={true} colorClass="bg-danger/10 text-danger" />
-      <Section title="Improved" rows={data.improved} colorClass="bg-success/10 text-success" />
-      <Section title="New" rows={data.new} colorClass="bg-accent/10 text-accent" />
-      <Section title="Removed" rows={data.removed} colorClass="bg-warning/10 text-warning" />
-      <Section title="Unchanged" rows={data.unchanged} colorClass="bg-panel text-muted" />
+      <Section title="Regressed" rows={data.regressed} defaultOpen={true} colorClass="bg-red-50 text-red-700" />
+      <Section title="Improved" rows={data.improved} colorClass="bg-emerald-50 text-emerald-700" />
+      <Section title="New" rows={data.new} colorClass="bg-amber-50 text-amber-700" />
+      <Section title="Removed" rows={data.removed} colorClass="bg-orange-50 text-orange-700" />
+      <Section title="Unchanged" rows={data.unchanged} colorClass="bg-stone-50 text-stone-500" />
     </div>
   );
 }

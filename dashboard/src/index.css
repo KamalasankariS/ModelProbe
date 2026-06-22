@@ -4,19 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* dashboard pages keep monospace */
-.dashboard-shell {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-}
-
-/* landing page uses Inter */
-.landing {
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-}
-
 /* smooth scroll */
 html {
   scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
 
 /* subtle grain texture for landing */

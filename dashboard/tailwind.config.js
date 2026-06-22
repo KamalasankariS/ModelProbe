@@ -5,16 +5,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        /* dashboard (dark) */
-        surface: "#111827",
-        panel: "#1F2937",
-        border: "#374151",
-        muted: "#6B7280",
-        accent: "#6366F1",
-        danger: "#EF4444",
+        /* shared dashboard + landing tokens (warm palette) */
+        surface: "#FAFAF6",
+        panel: "#FFFFFF",
+        border: "#E5E2D9",
+        muted: "#7A7668",
+        accent: "#D97706",
+        danger: "#DC2626",
         warning: "#F59E0B",
-        success: "#10B981",
-        /* landing page (warm) */
+        success: "#16A34A",
+        card: "#F7F5EF",
+        /* landing extras */
         cream: "#FAFAF6",
         sand: "#F2F0E8",
         charcoal: "#1A1A1A",

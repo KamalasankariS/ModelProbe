@@ -13,8 +13,10 @@ function NavItem({ to, label }: { to: string; label: string }) {
       to={to}
       end
       className={({ isActive }) =>
-        `px-3 py-2 rounded text-sm font-medium transition-colors ${
-          isActive ? "bg-accent text-white" : "text-muted hover:text-white"
+        `px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+          isActive
+            ? "bg-amber-100 text-amber-800"
+            : "text-stone-500 hover:text-charcoal hover:bg-sand"
         }`
       }
     >
@@ -25,18 +27,18 @@ function NavItem({ to, label }: { to: string; label: string }) {
 
 function DashboardLayout() {
   return (
-    <div className="min-h-screen bg-surface text-white flex flex-col dashboard-shell">
-      <header className="border-b border-border px-6 py-3 flex items-center gap-6">
-        <Link to="/" className="font-bold text-lg tracking-tight hover:text-accent transition-colors">
+    <div className="min-h-screen bg-cream text-charcoal flex flex-col">
+      <header className="border-b border-border bg-white px-6 py-3 flex items-center gap-6 shadow-sm">
+        <Link to="/" className="font-bold text-lg tracking-tight text-charcoal hover:text-amber-700 transition-colors">
           ModelProbe
         </Link>
-        <nav className="flex gap-2">
+        <nav className="flex gap-1">
           <NavItem to="/dashboard" label="Overview" />
           <NavItem to="/dashboard/suites" label="Suites" />
           <NavItem to="/dashboard/playground" label="Playground" />
         </nav>
       </header>
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 max-w-7xl mx-auto w-full">
         <Routes>
           <Route path="/" element={<Overview />} />
           <Route path="/suites" element={<SuiteList />} />

@@ -553,7 +553,7 @@ function LivePlayground() {
 
     let parsedConfig: Record<string, unknown> = {};
     try {
-      parsedConfig = JSON.parse(config);
+      parsedConfig = JSON.parse(config.trim() || "{}");
     } catch {
       setError("Invalid JSON in config");
       setLoading(false);

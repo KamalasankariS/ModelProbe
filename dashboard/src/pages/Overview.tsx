@@ -29,7 +29,7 @@ export default function Overview() {
     load();
   }, []);
 
-  if (loading) return <div className="text-muted">Loading...</div>;
+  if (loading) return <div className="text-stone-400 py-12 text-center">Loading...</div>;
 
   const suitesWithRegressions = Object.entries(regressions);
   const totalRuns = suites.reduce((acc, s) => acc + s.version_count, 0);
@@ -40,20 +40,22 @@ export default function Overview() {
 
   return (
     <div className="space-y-6">
+      <h1 className="text-2xl font-bold text-charcoal">Overview</h1>
+
       {suitesWithRegressions.length > 0 && (
-        <Card title="Regressions Detected" className="border-danger/40">
+        <Card title="Regressions Detected" className="border-red-200 bg-red-50/50">
           <div className="space-y-3">
             {suitesWithRegressions.map(([name, regs]) => (
               <div key={name} className="flex items-start justify-between">
                 <div>
-                  <Link to={`/suites/${name}`} className="text-danger font-medium hover:underline">
+                  <Link to={`/dashboard/suites/${name}`} className="text-red-700 font-medium hover:underline">
                     {name}
                   </Link>
-                  <p className="text-xs text-muted mt-0.5">{regs.length} test case(s) regressed</p>
+                  <p className="text-xs text-stone-500 mt-0.5">{regs.length} test case(s) regressed</p>
                 </div>
                 <Link
-                  to={`/suites/${name}`}
-                  className="text-xs text-accent hover:underline"
+                  to={`/dashboard/suites/${name}`}
+                  className="text-xs text-amber-700 hover:underline font-medium"
                 >
                   View
                 </Link>
@@ -65,16 +67,16 @@ export default function Overview() {
 
       <div className="grid grid-cols-3 gap-4">
         <Card>
-          <div className="text-2xl font-bold">{suites.length}</div>
-          <div className="text-xs text-muted mt-1">Active Suites</div>
+          <div className="text-3xl font-bold text-charcoal">{suites.length}</div>
+          <div className="text-xs text-stone-400 mt-1 uppercase tracking-wide">Active Suites</div>
         </Card>
         <Card>
-          <div className="text-2xl font-bold">{totalRuns}</div>
-          <div className="text-xs text-muted mt-1">Total Versions</div>
+          <div className="text-3xl font-bold text-charcoal">{totalRuns}</div>
+          <div className="text-xs text-stone-400 mt-1 uppercase tracking-wide">Total Versions</div>
         </Card>
         <Card>
-          <div className="text-2xl font-bold">{Math.round(avgPassRate * 100)}%</div>
-          <div className="text-xs text-muted mt-1">Avg Pass Rate</div>
+          <div className="text-3xl font-bold text-charcoal">{Math.round(avgPassRate * 100)}%</div>
+          <div className="text-xs text-stone-400 mt-1 uppercase tracking-wide">Avg Pass Rate</div>
         </Card>
       </div>
 
@@ -82,10 +84,10 @@ export default function Overview() {
         <div className="space-y-3">
           {suites.map((s) => (
             <div key={s.name} className="flex items-center justify-between">
-              <Link to={`/suites/${s.name}`} className="text-sm hover:text-accent">
+              <Link to={`/dashboard/suites/${s.name}`} className="text-sm text-charcoal hover:text-amber-700 font-medium">
                 {s.name}
                 {regressions[s.name] && (
-                  <span className="ml-2 text-xs text-danger">[regression]</span>
+                  <span className="ml-2 text-xs text-red-600 font-normal">[regression]</span>
                 )}
               </Link>
               <PassRateBar rate={s.pass_rate ?? 0} />

@@ -14,46 +14,48 @@ export default function SuiteList() {
     });
   }, []);
 
-  if (loading) return <div className="text-muted">Loading...</div>;
+  if (loading) return <div className="text-stone-400 py-12 text-center">Loading...</div>;
 
   return (
     <div>
-      <h1 className="text-xl font-semibold mb-4">Suites</h1>
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="text-left text-muted border-b border-border">
-            <th className="pb-2 pr-4">Name</th>
-            <th className="pb-2 pr-4">Latest Version</th>
-            <th className="pb-2 pr-4">Pass Rate</th>
-            <th className="pb-2 pr-4">Versions</th>
-            <th className="pb-2">Last Run</th>
-          </tr>
-        </thead>
-        <tbody>
-          {suites.map((s) => (
-            <tr key={s.name} className="border-b border-border/50 hover:bg-panel/50">
-              <td className="py-3 pr-4">
-                <Link to={`/suites/${s.name}`} className="hover:text-accent font-medium">
-                  {s.name}
-                </Link>
-                {s.has_regressions && (
-                  <span className="ml-2 text-xs bg-danger/20 text-danger px-1.5 py-0.5 rounded">
-                    regression
-                  </span>
-                )}
-              </td>
-              <td className="py-3 pr-4 text-muted">{s.latest_version ?? "—"}</td>
-              <td className="py-3 pr-4">
-                <PassRateBar rate={s.pass_rate ?? 0} />
-              </td>
-              <td className="py-3 pr-4 text-muted">{s.version_count}</td>
-              <td className="py-3 text-muted">
-                {s.last_run ? new Date(s.last_run).toLocaleString() : "—"}
-              </td>
+      <h1 className="text-2xl font-bold text-charcoal mb-6">Suites</h1>
+      <div className="bg-white border border-border rounded-xl shadow-sm overflow-hidden">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="text-left text-stone-400 border-b border-border bg-cream">
+              <th className="px-5 py-3 font-medium text-xs uppercase tracking-wider">Name</th>
+              <th className="px-5 py-3 font-medium text-xs uppercase tracking-wider">Latest Version</th>
+              <th className="px-5 py-3 font-medium text-xs uppercase tracking-wider">Pass Rate</th>
+              <th className="px-5 py-3 font-medium text-xs uppercase tracking-wider">Versions</th>
+              <th className="px-5 py-3 font-medium text-xs uppercase tracking-wider">Last Run</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {suites.map((s) => (
+              <tr key={s.name} className="border-b border-border/50 hover:bg-cream/50 transition-colors">
+                <td className="px-5 py-4">
+                  <Link to={`/dashboard/suites/${s.name}`} className="text-charcoal hover:text-amber-700 font-medium">
+                    {s.name}
+                  </Link>
+                  {s.has_regressions && (
+                    <span className="ml-2 text-xs bg-red-50 text-red-700 px-2 py-0.5 rounded-full ring-1 ring-red-200">
+                      regression
+                    </span>
+                  )}
+                </td>
+                <td className="px-5 py-4 text-stone-500">{s.latest_version ?? "—"}</td>
+                <td className="px-5 py-4">
+                  <PassRateBar rate={s.pass_rate ?? 0} />
+                </td>
+                <td className="px-5 py-4 text-stone-500">{s.version_count}</td>
+                <td className="px-5 py-4 text-stone-500">
+                  {s.last_run ? new Date(s.last_run).toLocaleString() : "—"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
