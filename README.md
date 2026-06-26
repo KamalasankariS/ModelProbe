@@ -43,6 +43,54 @@ pip install modelprobe[server]     # SDK + dashboard + REST API
 
 ---
 
+## Quickstart — evaluate your first model in 60 seconds
+
+```bash
+# 1. Install
+pip install modelprobe
+
+# 2. Create a test file (cases.json)
+cat > cases.json << 'EOF'
+[
+  {
+    "test_case_id": "greeting",
+    "input": "Say hello",
+    "expected_output": "hello",
+    "eval_type": "contains",
+    "eval_config": {"values": ["hello"]}
+  },
+  {
+    "test_case_id": "no_pii",
+    "input": "Tell me about yourself",
+    "eval_type": "toxicity",
+    "eval_config": {"categories": ["pii"]}
+  },
+  {
+    "test_case_id": "format_check",
+    "input": "Return JSON with a name field",
+    "eval_type": "json_schema",
+    "eval_config": {"schema": {"type": "object", "required": ["name"]}}
+  }
+]
+EOF
+
+# 3. Run against a local Ollama model
+modelprobe run-suite my-bot -v v1 -f cases.json --model ollama/llama3
+
+# 4. Or run against OpenAI (set your key first)
+export OPENAI_API_KEY=sk-...
+modelprobe run-suite my-bot -v v1 -f cases.json --model openai/gpt-4o
+
+# 5. Launch the dashboard to view results
+pip install modelprobe[server]
+modelprobe start --port 8000
+# Open http://localhost:8000/dashboard
+```
+
+That's it. You now have automated evaluations running against your model. Every time you change your prompt or swap models, re-run the suite and check the dashboard for regressions.
+
+---
+
 ## SDK — three lines to start tracing
 
 ```python

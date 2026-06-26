@@ -43,7 +43,7 @@ from modelprobe.config import configure
 from modelprobe.trace import trace
 from modelprobe.suite import run_suite, assert_eval, SuiteResult
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 __all__ = [
     "configure",

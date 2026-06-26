@@ -216,7 +216,7 @@ class TestLLMJudgeEvaluator:
 
 class TestGetEvaluator:
     def test_all_types_resolve(self):
-        for name in ["exact", "contains", "regex", "json_schema", "llm_judge"]:
+        for name in ["exact", "contains", "regex", "json_schema", "llm_judge", "hallucination", "toxicity", "similarity"]:
             ev = get_evaluator(name)
             assert ev.name == name
 
