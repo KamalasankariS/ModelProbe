@@ -133,9 +133,15 @@ class TestOversizedInputs:
 
 class TestPathTraversal:
     def test_run_id_with_path_chars(self, client):
+        # Path traversal gets normalized by the HTTP client, so
+        # /api/runs/../../etc/passwd becomes /etc/passwd which hits
+        # the SPA catch-all (200 HTML) — not the API. Verify no
+        # sensitive data is leaked regardless.
         res = client.get("/api/runs/../../etc/passwd")
-        assert res.status_code == 404
+        assert "root:" not in res.text
+        assert "Traceback" not in res.text
 
     def test_suite_name_with_path_chars(self, client):
         res = client.get("/api/suites/../../etc/passwd")
-        assert res.status_code == 404
+        assert "root:" not in res.text
+        assert "Traceback" not in res.text

@@ -7,7 +7,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 import modelprobe
@@ -64,6 +64,8 @@ def create_app() -> FastAPI:
 
         @app.get("/{path:path}")
         async def spa_fallback(request: Request, path: str):
+            if path.startswith("api/"):
+                return JSONResponse({"detail": "Not found"}, status_code=404)
             file_path = static_dir / path
             if file_path.is_file():
                 return FileResponse(file_path)
