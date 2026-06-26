@@ -4,9 +4,10 @@ on:
   push:
     branches: [main]
     paths:
-      - "dashboard/src/pages/Landing.tsx"
       - "dashboard/src/**"
-      - "modelprobe/server/static/dist/**"
+      - "dashboard/vite.config.ts"
+      - "dashboard/package.json"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -37,11 +38,14 @@ jobs:
         working-directory: dashboard
         run: npm ci
 
-      - name: Build for static deployment
+      - name: Build for GitHub Pages
         working-directory: dashboard
         env:
           VITE_BASE_URL: /ModelProbe/
-        run: npm run build -- --base /ModelProbe/
+        run: npm run build
+
+      - name: Add 404.html for SPA routing
+        run: cp modelprobe/server/static/dist/index.html modelprobe/server/static/dist/404.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
