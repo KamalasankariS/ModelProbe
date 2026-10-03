@@ -278,23 +278,39 @@ result = assert_eval(
 
 Benchmarked 3 local models across 60 test cases (math, factual QA, instruction following, code generation, hallucination detection):
 
+**Accuracy**
+
 | Model | Overall | Math | Factual | Instruction | Code | Hallucination |
 |---|---|---|---|---|---|---|
 | gemma3:4b | **88%** | 100% | 92% | 50% | 100% | **100%** |
 | codegemma:7b | 82% | 92% | 83% | 50% | 100% | 83% |
 | llama3 (8B) | 78% | 67% | 83% | 50% | 100% | 92% |
 
+**Performance**
+
+| Model | Avg Latency | P50 | P95 | Tok/s | Evals/s | Wall Time |
+|---|---|---|---|---|---|---|
+| gemma3:4b | 1,442ms | 547ms | 5,010ms | 18.2 | 0.549 | 109s |
+| codegemma:7b | 1,610ms | 652ms | 5,371ms | 10.9 | 0.492 | 122s |
+| llama3 (8B) | 1,355ms | 526ms | 4,431ms | 11.9 | 0.589 | 102s |
+
 Key findings:
 - Hallucination evaluator detected up to 17% confabulation rates across model families
 - Self-consistency correctly flagged uncertain knowledge (population statistics, obscure trivia) while confirming stable recall on well-known facts
 - All Wikidata factual claims verified successfully against the knowledge graph
 - gemma3:4b (4B params) outperformed llama3 (8B) overall — smaller does not mean worse
+- llama3 had the lowest latency (p50: 526ms) and highest throughput (0.589 evals/s) despite lower accuracy
+- gemma3:4b produced the most tokens per request (avg 36.2) with the best token throughput (18.2 tok/s)
+- Automated harness completes a full 60-case evaluation in ~102s vs ~10 min for manual output review — an 83% reduction in regression detection time
+
+**Methodology notes:** Results above are from a single trial of 60 test cases (12 per category) against local Ollama models. For statistical confidence, run multiple trials with `--trials N` — this computes mean ± 95% CI per model and category, controlling for LLM non-determinism. The 83% time reduction compares automated harness wall time (102–122s from `benchmarks/results/comparison.json`) against manual review of 60 model outputs (~10 min estimated baseline).
 
 Reproduce locally:
 
 ```bash
 ollama pull gemma3:4b && ollama pull llama3 && ollama pull codegemma:7b
-python benchmarks/run_benchmark.py
+python benchmarks/run_benchmark.py              # single trial
+python benchmarks/run_benchmark.py --trials 3   # 3 trials with mean ± 95% CI
 ```
 
 ---
@@ -372,13 +388,13 @@ All responses follow the envelope:
 
 ## Testing
 
-Tests are organized into three tiers:
+234 tests organized into three tiers:
 
 ```
 tests/
-  unit/           # isolated component tests (evaluators, trace, suite, storage, CLI, config)
-  regression/     # contract tests that lock down API shapes and behavior
-  security/       # penetration tests (SQL injection, input validation, API safety)
+  unit/           # 151 isolated component tests (evaluators, trace, suite, storage, CLI, config)
+  regression/     # 43 contract tests that lock down API shapes and behavior
+  security/       # 40 penetration tests (SQL injection, input validation, API safety)
 ```
 
 ```bash

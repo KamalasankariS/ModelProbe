@@ -1,12 +1,16 @@
 """Run ModelProbe benchmark against local Ollama models.
 
 Uses the model adapter layer for standardized latency and token tracking.
+Supports multiple trials for statistical confidence.
 
 Usage:
-    python benchmarks/run_benchmark.py
+    python benchmarks/run_benchmark.py                # single trial (default)
+    python benchmarks/run_benchmark.py --trials 3     # 3 trials with mean ± std
 """
 
+import argparse
 import json
+import math
 import sys
 import time
 from pathlib import Path
@@ -112,10 +116,134 @@ def run_model(model_name: str, test_cases: list) -> dict:
     return summary
 
 
-def print_comparison(summaries: list):
+def _mean(values: list[float]) -> float:
+    return sum(values) / len(values) if values else 0.0
+
+
+def _std(values: list[float]) -> float:
+    if len(values) < 2:
+        return 0.0
+    m = _mean(values)
+    return math.sqrt(sum((x - m) ** 2 for x in values) / (len(values) - 1))
+
+
+def _ci95(values: list[float]) -> float:
+    """95% confidence interval half-width (t-based for small N)."""
+    n = len(values)
+    if n < 2:
+        return 0.0
+    # t-values for 95% CI, df=1..9
+    t_table = {1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571,
+               6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262}
+    t_val = t_table.get(n - 1, 1.96)
+    return t_val * _std(values) / math.sqrt(n)
+
+
+def aggregate_trials(trial_summaries: list[list[dict]]) -> list[dict]:
+    """Aggregate multiple trial runs into mean ± CI for each model."""
+    n_trials = len(trial_summaries)
+    models = [s["model"] for s in trial_summaries[0]]
+
+    aggregated = []
+    for model in models:
+        runs = []
+        for trial in trial_summaries:
+            match = [s for s in trial if s["model"] == model]
+            if match:
+                runs.append(match[0])
+
+        if not runs:
+            continue
+
+        pass_rates = [r["pass_rate"] for r in runs]
+        avg_latencies = [r["latency"]["avg_ms"] for r in runs]
+        p95_latencies = [r["latency"]["p95_ms"] for r in runs]
+        wall_times = [r["throughput"]["wall_time_s"] for r in runs]
+
+        # Per-category pass rates across trials
+        categories = ["math", "factual", "instruction", "code", "hallucination"]
+        cat_stats = {}
+        for cat in categories:
+            cat_rates = []
+            for r in runs:
+                cat_results = [c for c in r["results"] if c.get("test_case_id", "").startswith(cat[:4])]
+                cat_total = len(cat_results)
+                if cat_total > 0:
+                    cat_passed = sum(1 for c in cat_results if c.get("status") == "pass")
+                    cat_rates.append(cat_passed / cat_total)
+            cat_stats[cat] = {
+                "mean": round(_mean(cat_rates), 4),
+                "std": round(_std(cat_rates), 4),
+                "ci95": round(_ci95(cat_rates), 4),
+                "values": [round(v, 4) for v in cat_rates],
+            }
+
+        aggregated.append({
+            "model": model,
+            "trials": n_trials,
+            "pass_rate": {
+                "mean": round(_mean(pass_rates), 4),
+                "std": round(_std(pass_rates), 4),
+                "ci95": round(_ci95(pass_rates), 4),
+                "values": [round(v, 4) for v in pass_rates],
+            },
+            "latency_avg_ms": {
+                "mean": round(_mean(avg_latencies), 1),
+                "std": round(_std(avg_latencies), 1),
+                "ci95": round(_ci95(avg_latencies), 1),
+            },
+            "latency_p95_ms": {
+                "mean": round(_mean(p95_latencies), 1),
+                "std": round(_std(p95_latencies), 1),
+                "ci95": round(_ci95(p95_latencies), 1),
+            },
+            "wall_time_s": {
+                "mean": round(_mean(wall_times), 1),
+                "std": round(_std(wall_times), 1),
+                "ci95": round(_ci95(wall_times), 1),
+            },
+            "categories": cat_stats,
+        })
+
+    return aggregated
+
+
+def print_comparison(summaries: list, multi_trial: list[dict] | None = None):
     print(f"\n{'=' * 80}")
     print("  COMPARISON")
     print(f"{'=' * 80}")
+
+    if multi_trial:
+        n = multi_trial[0]["trials"]
+        print(f"  Aggregated over {n} trials (mean ± 95% CI)\n")
+        print(f"  {'Model':<16} {'Pass Rate':>18} {'Avg Latency':>20} {'Wall Time':>18}")
+        print(f"  {'-' * 75}")
+        for m in multi_trial:
+            pr = m["pass_rate"]
+            lat = m["latency_avg_ms"]
+            wt = m["wall_time_s"]
+            print(
+                f"  {m['model']:<16} "
+                f"{pr['mean']:>6.0%} ± {pr['ci95']:.1%}    "
+                f"{lat['mean']:>7.0f} ± {lat['ci95']:.0f}ms    "
+                f"{wt['mean']:>6.1f} ± {wt['ci95']:.1f}s"
+            )
+
+        categories = ["math", "factual", "instruction", "code", "hallucination"]
+        print(f"\n  Per-category (mean ± 95% CI):")
+        print(f"  {'Category':<15}", end="")
+        for m in multi_trial:
+            print(f" {m['model']:>24}", end="")
+        print()
+        print(f"  {'-' * (15 + 25 * len(multi_trial))}")
+        for cat in categories:
+            print(f"  {cat:<15}", end="")
+            for m in multi_trial:
+                cs = m["categories"][cat]
+                print(f" {cs['mean']:>10.0%} ± {cs['ci95']:.1%}       ", end="")
+            print()
+        return
+
     print(f"  {'Model':<16} {'Pass Rate':>10} {'Avg Latency':>12} {'P95':>8} {'Tok/s':>8} {'Evals/s':>9}")
     print(f"  {'-' * 70}")
     for s in summaries:
@@ -148,7 +276,7 @@ def print_comparison(summaries: list):
         print()
 
 
-def save_results(summaries: list):
+def save_results(summaries: list, multi_trial: list[dict] | None = None):
     RESULTS_DIR.mkdir(exist_ok=True)
 
     for s in summaries:
@@ -186,27 +314,55 @@ def save_results(summaries: list):
     comp_path.write_text(json.dumps(comparison, indent=2))
     print(f"  Saved: {comp_path}")
 
+    if multi_trial:
+        mt_path = RESULTS_DIR / "multi_trial.json"
+        mt_path.write_text(json.dumps(multi_trial, indent=2))
+        print(f"  Saved: {mt_path}")
+
 
 def main():
+    parser = argparse.ArgumentParser(description="Run ModelProbe benchmarks")
+    parser.add_argument("--trials", type=int, default=1,
+                        help="Number of trials to run per model (default: 1). "
+                             "Multiple trials compute mean ± 95%% CI.")
+    args = parser.parse_args()
+
     test_cases = json.loads(TEST_CASES_PATH.read_text())
     print(f"Loaded {len(test_cases)} test cases from {TEST_CASES_PATH.name}")
     print(f"Models: {', '.join(MODELS)}")
+    if args.trials > 1:
+        print(f"Trials: {args.trials}")
 
-    summaries = []
-    for model in MODELS:
-        try:
-            summary = run_model(model, test_cases)
-            summaries.append(summary)
-        except Exception as exc:
-            print(f"  ERROR running {model}: {exc}")
-            continue
+    all_trial_summaries = []
 
-    if not summaries:
-        print("No models completed successfully.")
-        sys.exit(1)
+    for trial_num in range(args.trials):
+        if args.trials > 1:
+            print(f"\n{'#' * 80}")
+            print(f"  TRIAL {trial_num + 1} of {args.trials}")
+            print(f"{'#' * 80}")
 
-    print_comparison(summaries)
-    save_results(summaries)
+        summaries = []
+        for model in MODELS:
+            try:
+                summary = run_model(model, test_cases)
+                summaries.append(summary)
+            except Exception as exc:
+                print(f"  ERROR running {model}: {exc}")
+                continue
+
+        if not summaries:
+            print("No models completed successfully.")
+            sys.exit(1)
+
+        all_trial_summaries.append(summaries)
+
+    multi_trial = None
+    if args.trials > 1:
+        multi_trial = aggregate_trials(all_trial_summaries)
+
+    # Print and save using the last trial's summaries as the per-model detail
+    print_comparison(summaries, multi_trial=multi_trial)
+    save_results(summaries, multi_trial=multi_trial)
     print("\nDone.")
 
 

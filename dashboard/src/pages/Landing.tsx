@@ -386,19 +386,19 @@ function Benchmarks() {
     {
       name: "gemma3:4b",
       type: "Small generalist",
-      scores: { math: 83, factual: 75, instruction: 92, code: 58, hallucination: 83 },
-      overall: 78,
-    },
-    {
-      name: "llama3",
-      type: "Mid-size generalist",
-      scores: { math: 92, factual: 83, instruction: 100, code: 75, hallucination: 92 },
+      scores: { math: 100, factual: 92, instruction: 50, code: 100, hallucination: 100 },
       overall: 88,
     },
     {
       name: "codegemma:7b",
       type: "Code specialist",
-      scores: { math: 75, factual: 67, instruction: 83, code: 92, hallucination: 75 },
+      scores: { math: 92, factual: 83, instruction: 50, code: 100, hallucination: 83 },
+      overall: 82,
+    },
+    {
+      name: "llama3",
+      type: "Mid-size generalist",
+      scores: { math: 67, factual: 83, instruction: 50, code: 100, hallucination: 92 },
       overall: 78,
     },
   ];
